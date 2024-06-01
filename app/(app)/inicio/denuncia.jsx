@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const SoportePage = () => {
+const denuncias = () => {
   return (
     <View>
-      <Text>Soporte</Text>
+      <Text>denuncias</Text>
     </View>
   );
 };
 
-export default SoportePage;
+export default denuncias;

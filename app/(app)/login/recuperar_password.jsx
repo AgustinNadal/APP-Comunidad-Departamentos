@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { router } from "expo-router";
 
 export default function recuperar_password() {
   return (
@@ -7,7 +8,11 @@ export default function recuperar_password() {
       <View style={styles.card}>
         <Text style={styles.title}>RECUPERAR CONTRASEÑA</Text>
         <TextInput style={styles.input} placeholder="DNI" />
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button}
+          onPress={() =>{
+            router.push("/inicio/home")
+          }}
+        >
           <Text>Confirmar</Text>
         </TouchableOpacity>
       </View>

@@ -15,9 +15,9 @@ export default function TabLayout() {
         headerShown: false,
       }}>
       <Tabs.Screen
-        name="tienda"
+        name="servicio"
         options={{
-          title: 'Tienda',
+          title: 'Servicios',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'bag' : 'bag-outline'} color={color} />
 
@@ -36,19 +36,19 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="soporte"
+        name="reclamo"
         options={{
-          title: 'Soporte',
+          title: 'Reclamo',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'headset' : 'headset-outline'} color={color} />
+            <TabBarIcon name={focused ? 'megaphone' : 'megaphone-outline'} color={color} />
           ),
         }}
       />
 
       <Tabs.Screen
-        name="logout"
+        name="denuncia"
         options={{
-          title: 'Logout',
+          title: 'Denuncias',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'person-remove' : 'person-remove-outline'} color={color} />
           ),

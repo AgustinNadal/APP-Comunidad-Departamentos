@@ -2,19 +2,19 @@ import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { router } from "expo-router";
 
-export default function register_screen() {
+export default function cambiar_password() {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Text style={styles.title}>REGISTRACIÓN</Text>
-        <TextInput style={styles.input} placeholder="DNI" />
-        <TextInput style={styles.input} placeholder="Email" />
+        <Text style={styles.title}>CAMBIAR      CONTRASEÑA</Text>
+        <TextInput style={styles.input} placeholder="Nueva Contraseña" />
+        <TextInput style={styles.input} placeholder="Confirmar Contraseña" />
         <TouchableOpacity style={styles.button}
-          onPress={() =>{
-            router.push("/inicio/home")
-          }}
+            onPress={() =>{
+                router.push("/inicio/home")
+              }}
         >
-          <Text>Registrar</Text>
+          <Text>Confirmar</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   title: {
+    textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 24,
     marginBottom: 40

@@ -1,54 +1,63 @@
 import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert} from "react-native";
+import React from "react";
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
-
-
-
 
 export default function login_screen() {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Ionicons name="person-circle" size={100} color="white" />
+        <Image source={require('../../../assets/logo.png')} style={styles.logo} />
       </View>
-      <View style={styles.inputContainer}>
-        <View style={styles.inputWrapper}>
-          <Ionicons name="person" size={20} color="gray" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="usuario"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
+      <View style={styles.mainContent}>
+        <View style={styles.iconContainer}>
+          <Ionicons name="person-circle" size={200} color="white" />
         </View>
+        <View style={styles.inputContainer}>
+          <View style={styles.inputWrapper}>
+            <Ionicons name="person" size={20} color="gray" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="usuario"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
 
-        <View style={styles.inputWrapper}>
-          <Ionicons name="lock-closed" size={20} color="gray" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="contraseña"
-            secureTextEntry
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
+          <View style={styles.inputWrapper}>
+            <Ionicons name="lock-closed" size={20} color="gray" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="contraseña"
+              secureTextEntry
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              router.push("./recuperar_password")
+            }}
+          >
+            <Text style={styles.forgotPassword}>¿Ha olvidado su contraseña?</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button}
+            onPress={() => {
+              router.push("../inicio/home")
+            }}
+          >
+            <Text style={styles.buttonText}>Iniciar Sesion</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.createAccountButton}
+            onPress={() => {
+              router.push("./register_screen")
+            }}
+          >
+            <Text style={styles.buttonText}>Crear cuenta</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity>
-          <Text style={styles.forgotPassword}>¿Ha olvidado su contraseña?</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Iniciar Sesion</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.createAccountButton}
-          onPress={() =>{
-            router.push("./register_screen")
-          }}
-        >
-          <Text style={styles.buttonText}>Crear cuenta</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -59,16 +68,31 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#0188CC",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   logoContainer: {
-    backgroundColor: "#4FB3FF",
     width: "100%",
+    position: "absolute",
+    top: 20,
+    left: 20,
+    zIndex: 1,
+  },
+  logo: {
+    width: 75,
+    height: 75,
+  },
+  mainContent: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 0,
+  },
+  iconContainer: {
     alignItems: "center",
     paddingVertical: 20,
   },
   inputContainer: {
-    backgroundColor: "#0188CC",
     width: "100%",
     paddingHorizontal: 30,
   },
