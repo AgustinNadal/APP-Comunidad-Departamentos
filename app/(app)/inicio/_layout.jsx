@@ -50,7 +50,7 @@ export default function TabLayout() {
         options={{
           title: 'Logout',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <TabBarIcon name={focused ? 'person-remove' : 'person-remove-outline'} color={color} />
           ),
         }}
       />

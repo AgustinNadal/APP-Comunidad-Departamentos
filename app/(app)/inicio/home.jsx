@@ -1,5 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { router } from "expo-router";
 
 export default function home() {
   return (
@@ -10,7 +12,15 @@ export default function home() {
           Invitado
           <Text style={styles.headerTextLight}> Bienvenido</Text>
         </Text>
-        <View style={styles.avatarIcon} />
+        <TouchableOpacity 
+          onPress={() =>{
+            router.push("/login/login_screen")
+          }}
+        >
+          <View style={styles.avatarIconContainer}>
+            <Icon name="person-circle-outline" size={40} color="#FFFFFF" />
+          </View>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.serviceCard}>
@@ -30,39 +40,25 @@ export default function home() {
           <Text style={styles.buttonText}>Pida uno</Text>
         </TouchableOpacity>
       </View>
+      
 
       <View style={styles.servicesGrid}>
         <View style={styles.serviceItem}>
-          <View style={styles.gridIcon} />
+        <Icon name="build-outline" size={50} color="#000000" style={styles.gridIcon} />
           <Text style={styles.gridText}>Plomero</Text>
         </View>
         <View style={styles.serviceItem}>
-          <View style={styles.gridIcon} />
+        <Icon name="color-fill-outline" size={50} color="#000000" style={styles.gridIcon} />
           <Text style={styles.gridText}>Pintor</Text>
         </View>
         <View style={styles.serviceItem}>
-          <View style={styles.gridIcon} />
+        <Icon name="lock-closed-outline" size={50} color="#000000" style={styles.gridIcon} />
           <Text style={styles.gridText}>Cerrajero</Text>
         </View>
         <View style={styles.serviceItem}>
-          <View style={styles.gridIcon} />
+        <Icon name="bulb-outline" size={50} color="#000000" style={styles.gridIcon} />
           <Text style={styles.gridText}>Electricista</Text>
         </View>
-      </View>
-
-      <View style={styles.bottomMenu}>
-        <TouchableOpacity style={styles.menuItem}>
-          <View style={styles.menuIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <View style={styles.menuIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <View style={styles.menuIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <View style={styles.menuIcon} />
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -79,6 +75,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderBottomLeftRadius: 35, // Ajusta el valor según la curvatura deseada
+    borderBottomRightRadius: 35, // Ajusta el valor según la curvatura deseada
+
   },
   headerText: {
     color: '#FFFFFF',
@@ -90,11 +89,13 @@ const styles = StyleSheet.create({
   headerTextLight: {
     fontWeight: '300',
   },
-  avatarIcon: {
+  avatarIconContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#000000',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   serviceCard: {
     backgroundColor: '#FFFFFF',
@@ -135,6 +136,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
+    paddingTop: 120,
     padding: 16,
   },
   serviceItem: {
@@ -142,11 +144,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   gridIcon: {
-    width: 50,
-    height: 50,
+    textAlign: 'center',
+    width: 55,
+    height: 55,
     marginBottom: 8,
     backgroundColor: '#FFD54F',
-    borderRadius: 25,
+    borderRadius: 30,
   },
   gridText: {
     fontSize: 14,
