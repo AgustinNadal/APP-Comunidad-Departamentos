@@ -1,9 +1,11 @@
 import { router } from "expo-router";
-import React from "react";
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function login_screen() {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -29,10 +31,13 @@ export default function login_screen() {
             <TextInput
               style={styles.input}
               placeholder="contraseña"
-              secureTextEntry
+              secureTextEntry={!passwordVisible}
               autoCapitalize="none"
               autoCorrect={false}
             />
+            <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+              <Ionicons name={passwordVisible ? "eye" : "eye-off"} size={20} color="gray" />
+            </TouchableOpacity>
           </View>
           <TouchableOpacity
             onPress={() => {

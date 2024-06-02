@@ -3,7 +3,6 @@ import React from "react";
 
 const index = () => {
   return <Redirect href="/inicio/home" />;
-  
 };
 
 export default index;

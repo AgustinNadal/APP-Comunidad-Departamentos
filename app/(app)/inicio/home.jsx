@@ -1,9 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { router } from "expo-router";
 
 export default function home() {
+  const navigateToService = (category) => {
+    router.push({
+      pathname: './servicio',
+      params: { category }
+    });
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -12,11 +19,7 @@ export default function home() {
           Invitado
           <Text style={styles.headerTextLight}> Bienvenido</Text>
         </Text>
-        <TouchableOpacity 
-          onPress={() =>{
-            router.push("/login/login_screen")
-          }}
-        >
+        <TouchableOpacity onPress={() => router.push("/login/login_screen")}>
           <View style={styles.avatarIconContainer}>
             <Icon name="person-circle-outline" size={40} color="#FFFFFF" />
           </View>
@@ -24,41 +27,40 @@ export default function home() {
       </View>
 
       <View style={styles.serviceCard}>
-        <View style={styles.serviceIcon} />
+        <Image source={require('../../../assets/images/icon_trabajador.png')} style={styles.serviceIcon} />
         <Text style={styles.serviceText}>¿Necesitas urgente un electricista?</Text>
         <Text style={styles.serviceSubText}>Podes pedir un profesional</Text>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Pida uno</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigateToService('Electricista')}>
+          <Text style={styles.buttonText}>Pida Uno</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.serviceCard}>
-        <View style={styles.serviceIcon} />
+        <Image source={require('../../../assets/images/icon_trabajador.png')} style={styles.serviceIcon} />
         <Text style={styles.serviceText}>¿Necesitas urgente un Plomero?</Text>
         <Text style={styles.serviceSubText}>Podes pedir un profesional</Text>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Pida uno</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigateToService('Plomero')}>
+          <Text style={styles.buttonText}>Pida Uno</Text>
         </TouchableOpacity>
       </View>
-      
 
       <View style={styles.servicesGrid}>
-        <View style={styles.serviceItem}>
-        <Icon name="build-outline" size={50} color="#000000" style={styles.gridIcon} />
-          <Text style={styles.gridText}>Plomero</Text>
-        </View>
-        <View style={styles.serviceItem}>
-        <Icon name="color-fill-outline" size={50} color="#000000" style={styles.gridIcon} />
+        <TouchableOpacity style={styles.serviceItem} onPress={() => navigateToService('Plomero')}>
+          <Icon name="build-outline" size={50} color="#000000" style={styles.gridIcon} />
+          <Text style={styles.gridText}>Fontanero</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.serviceItem} onPress={() => navigateToService('Pintor')}>
+          <Icon name="color-fill-outline" size={50} color="#000000" style={styles.gridIcon} />
           <Text style={styles.gridText}>Pintor</Text>
-        </View>
-        <View style={styles.serviceItem}>
-        <Icon name="lock-closed-outline" size={50} color="#000000" style={styles.gridIcon} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.serviceItem} onPress={() => navigateToService('Cerrajero')}>
+          <Icon name="lock-closed-outline" size={50} color="#000000" style={styles.gridIcon} />
           <Text style={styles.gridText}>Cerrajero</Text>
-        </View>
-        <View style={styles.serviceItem}>
-        <Icon name="bulb-outline" size={50} color="#000000" style={styles.gridIcon} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.serviceItem} onPress={() => navigateToService('Electricista')}>
+          <Icon name="bulb-outline" size={50} color="#000000" style={styles.gridIcon} />
           <Text style={styles.gridText}>Electricista</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -77,7 +79,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomLeftRadius: 35, // Ajusta el valor según la curvatura deseada
     borderBottomRightRadius: 35, // Ajusta el valor según la curvatura deseada
-
   },
   headerText: {
     color: '#FFFFFF',
@@ -108,7 +109,6 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     marginBottom: 8,
-    backgroundColor: '#FFD54F',
     borderRadius: 30,
   },
   serviceText: {
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     width: 55,
     height: 55,
     marginBottom: 8,
-    backgroundColor: '#FFD54F',
+    backgroundColor: '#FFFFFF',
     borderRadius: 30,
   },
   gridText: {
