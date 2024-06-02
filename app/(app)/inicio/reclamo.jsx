@@ -12,17 +12,29 @@ export default function reclamo() {
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button}
+            onPress={() => {
+              router.push("../reclamos/crear_reclamo")
+            }}
+          >
             <Icon name="megaphone-outline" size={40} color="#000" style={styles.icon} />
             <Text style={styles.buttonText}>CREAR RECLAMO</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button}
+            onPress={() => {
+              router.push("../reclamos/mis_reclamos")
+            }}
+          >
             <Icon name="document-text-outline" size={40} color="#000" style={styles.icon} />
             <Text style={styles.buttonText}>MIS RECLAMOS</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button}
+            onPress={() => {
+              router.push("../reclamos/lista_reclamos")
+            }}
+          >
             <Icon name="list-outline" size={40} color="#000" style={styles.icon} />
             <Text style={styles.buttonText}>LISTA DE RECLAMOS</Text>
           </TouchableOpacity>

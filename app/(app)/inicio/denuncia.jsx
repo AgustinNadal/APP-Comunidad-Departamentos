@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { router } from "expo-router";
 
 export default function denuncia() {
   return (
@@ -10,15 +11,27 @@ export default function denuncia() {
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button}
+             onPress={() => {
+              router.push("../denuncias/crear_denuncia")
+            }}
+          >
             <Text style={styles.buttonText}>DENUNCIAR</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button}
+             onPress={() => {
+              router.push("../denuncias/mis_denuncias")
+            }}
+          >
             <Text style={styles.buttonText}>MIS DENUNCIAS</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button}
+             onPress={() => {
+              router.push("../denuncias/denuncias_entrantes")
+            }}
+          >
             <Text style={styles.buttonText}>DENUNCIAS ENTRANTES</Text>
           </TouchableOpacity>
         </View>

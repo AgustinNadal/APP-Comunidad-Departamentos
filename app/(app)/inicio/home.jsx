@@ -12,7 +12,7 @@ export default function home() {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>
           <Text style={styles.headerTextBold}>Hola </Text>
@@ -62,7 +62,7 @@ export default function home() {
           <Text style={styles.gridText}>Electricista</Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 

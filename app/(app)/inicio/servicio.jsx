@@ -48,7 +48,9 @@ export default function servicio() {
         <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
           <Text style={styles.buttonText}>Categoria</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button}
+          onPress={() => router.push("/servicios/ofrecer_servicio")}
+        >
           <Text style={styles.buttonText}>Ofrecer servicios</Text>
         </TouchableOpacity>
       </View>
@@ -90,7 +92,9 @@ export default function servicio() {
           <Text style={styles.titleText}>{service.title}</Text>
           <Text style={styles.descriptionText}>{service.description}</Text>
           <Image source={service.image} style={styles.image} />
-          <TouchableOpacity style={styles.moreButton}>
+          <TouchableOpacity style={styles.moreButton}
+            onPress={() => router.push("/servicios/x_servicio")}
+          >
             <Text style={styles.moreButtonText}>Ver más</Text>
           </TouchableOpacity>
         </View>
