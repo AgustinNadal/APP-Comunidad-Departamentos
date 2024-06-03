@@ -1,25 +1,34 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function alerta_datos_wifi() {
+  /*<TouchableOpacity style={styles.button}>
+            <Icon name="save-outline" size={24} color="#000" style={styles.icon} />
+            <Text style={styles.buttonText}>RECLAMO LOCAL</Text>
+          </TouchableOpacity> */
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>MODO DE GUARDADO</Text>
+        <Text style={styles.headerText}>NO HAY SEÑAL</Text>
       </View>
-      <TouchableOpacity style={styles.option}>
-        <Icon name="wifi-outline" size={24} color="#000" style={styles.icon} />
-        <Text style={styles.optionText}>CONECTAR WIFI</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.option}>
-        <Icon name="cellular-outline" size={24} color="#000" style={styles.icon} />
-        <Text style={styles.optionText}>USAR DATOS MOVILES</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.option}>
-        <Icon name="save-outline" size={24} color="#000" style={styles.icon} />
-        <Text style={styles.optionText}>RECLAMO LOCAL</Text>
-      </TouchableOpacity>
+
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Text style={{color: 'white', fontSize: 20, textAlign: 'center', marginBottom: 20}}>No hay señal de internet disponible. Por favor, verifique tener wifi o usar datos mobiles.</Text>
+        <View style={styles.buttonContainer}>
+          <View style={styles.button}>
+            <Icon name="wifi-outline" size={24} color="#000" style={styles.icon} />
+            <Text style={styles.buttonText}>CONECTAR WIFI</Text>
+          </View>
+
+          <View style={styles.button}>
+            <Icon name="cellular-outline" size={24} color="#000" style={styles.icon} />
+            <Text style={styles.buttonText}>USAR DATOS        MOVILES</Text>
+          </View>
+
+          
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -27,39 +36,43 @@ export default function alerta_datos_wifi() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: '#0091EA',
-    alignItems: 'center',
   },
   header: {
     backgroundColor: '#29B6F6',
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 40,
-    width: '100%',
+    padding: 16,
     alignItems: 'center',
   },
   headerText: {
+    color: '#FFFFFF',
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#fff',
   },
-  option: {
-    backgroundColor: '#fff',
-    borderRadius: 30,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    flexDirection: 'row',
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
-    width: '100%',
+  },
+  buttonContainer: {
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 50,
+    height: 120, // Fixed height
+    width: 300, // Fixed width to make the button square
+    margin: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row', // To keep icon and text in a row
   },
   icon: {
     marginRight: 20,
   },
-  optionText: {
-    fontSize: 16,
+  buttonText: {
+    color: '#000000',
+    fontSize: 25, // Adjusted font size to fit the new button size
     fontWeight: 'bold',
-    color: '#000',
+    textAlign: 'center', // Ensures text is centered within the button
   },
 });
