@@ -26,6 +26,14 @@ const services = [
     description: 'Nuestro equipo de carpinteros expertos está disponible para atender todas sus necesidades de carpintería, ofreciendo un servicio confiable y de alta calidad',
     image: require('../../../assets/images/carpintero.png'),
     category: 'Carpintería' // Nueva propiedad para la categoría
+  },
+  {
+    id: '4',
+    contact: '1167357330',
+    title: 'Cerrajero Juan',
+    description: 'Nuestro equipo de cerrajeros certificados está listo para ofrecerle soluciones de cerrajería confiables y seguras.',
+    image: require('../../../assets/images/cerrajero.png'),
+    category: 'Cerrajería' // Nueva propiedad para la categoría
   }
   // Agrega más servicios según sea necesario
 ];

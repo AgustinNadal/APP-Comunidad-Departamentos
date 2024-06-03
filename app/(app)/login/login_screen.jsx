@@ -2,15 +2,20 @@ import { router } from "expo-router";
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
 
 export default function login_screen() {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   return (
     <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image source={require('../../../assets/logo.png')} style={styles.logo} />
-      </View>
+      <TouchableOpacity style={styles.backIconContainer}
+        onPress={() => {
+          router.push("../inicio/home")
+        }}
+      >
+        <Icon name="arrow-back" size={30} color="#fff" />
+      </TouchableOpacity>
       <View style={styles.mainContent}>
         <View style={styles.iconContainer}>
           <Ionicons name="person-circle" size={200} color="white" />
@@ -72,8 +77,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#0188CC",
-    alignItems: "center",
     justifyContent: "flex-start",
+    paddingTop: 20,
   },
   logoContainer: {
     width: "100%",
@@ -138,4 +143,8 @@ const styles = StyleSheet.create({
     color: "#0188CC",
     fontWeight: "bold",
   },
+
+  backIconContainer: {
+    paddingLeft: 20,
+  }
 });

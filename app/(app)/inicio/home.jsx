@@ -1,15 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { router } from "expo-router";
+import NetInfo from "@react-native-community/netinfo";
 
-export default function home() {
+
+
+export default function Home() {
   const navigateToService = (category) => {
     router.push({
       pathname: './servicio',
       params: { category }
     });
   };
+
+  const [isConnected, setIsConnected] = useState(true); // Assume connected initially
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((networkState) => {
+      setIsConnected(networkState.isConnected);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  if (!isConnected) {
+    // Redirect to the alert screen when no network connection
+    // You can replace "../alertas/alerta_datos_wifi" with your actual route
+    router.push("../alertas/alerta_datos_wifi");
+  } else {
+    // Show the home screen
+    // Modify this part as needed
+  
+}
+
+
 
   return (
     <View style={styles.container}>

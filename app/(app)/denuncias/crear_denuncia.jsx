@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
+import { router } from "expo-router";
 
 export default function crear_denuncia() {
   const [titulo, setTitulo] = useState('');
@@ -8,16 +10,39 @@ export default function crear_denuncia() {
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
   const [direccion, setDireccion] = useState('');
+  const [fotos, setFotos] = useState([]);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setFotos([...fotos, ...result.assets.map(asset => asset.uri)]);
+    }
+  };
 
   const handleEnviar = () => {
     // Lógica para manejar el envío del formulario
+
   };
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backIconContainer}
+        onPress={() => {
+          router.push("../inicio/denuncia")
+        }}
+      >
+        <Icon name="arrow-back" size={30} color="#fff" />
+      </TouchableOpacity>
+
+      <View style={styles.separator} />
+
       <View style={styles.header}>
         <Text style={styles.headerText}>Datos</Text>
-        <View style={styles.icon}></View> 
       </View>
       <View style={styles.contentContainer}>
         <TextInput
@@ -63,13 +88,16 @@ export default function crear_denuncia() {
           />
         </View>
         <View style={styles.separator} />
-        <View style={styles.photoContainer}>
-          <Text style={styles.photoText}>0 fotos adjuntadas</Text>
-          <Text style={styles.photoSubtext}>Máximo: 5 fotos</Text>
-        </View>
-        <TouchableOpacity style={styles.button} onPress={handleEnviar}>
-          <Text style={styles.buttonText}>ENVIAR</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+            <Text style={styles.imagePickerText}>
+              {fotos.length === 0 ? '0 fotos adjuntadas' : `${fotos.length} fotos adjuntadas`}
+            </Text>
+          </TouchableOpacity>
+
+          <Text style={styles.imagePickerNote}>Máximo: 5 fotos</Text>
+          <TouchableOpacity style={styles.button} onPress={handleEnviar}>
+            <Text style={styles.buttonText}>ENVIAR</Text>
+          </TouchableOpacity>
       </View>
     </View>
   );
@@ -86,14 +114,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginBottom: 20,
-    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   headerText: {
-    fontSize: 24,
+    fontSize: 35,
     fontWeight: 'bold',
     color: '#fff',
+    textAlign: 'center',
   },
   icon: {
     width: 24,
@@ -126,22 +154,27 @@ const styles = StyleSheet.create({
   separator: {
     marginTop: 20, // Adjust the value as needed to create the desired spacing
   },
-  photoContainer: {
+
+  imagePicker: {
     height: 60,
-    backgroundColor: '#0288D1',
+    backgroundColor: '#fff',
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 10,
+    paddingHorizontal: 10,
   },
-  photoText: {
+
+  imagePickerText: {
+    color: '#000',
+  },
+
+  imagePickerNote: {
     color: '#fff',
-    fontSize: 16,
+    marginBottom: 20,
+    textAlign: 'center',
   },
-  photoSubtext: {
-    color: '#fff',
-    fontSize: 12,
-  },
+
   button: {
     backgroundColor: '#0277BD',
     paddingVertical: 15,

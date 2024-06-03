@@ -1,11 +1,23 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView} from 'react-native';
 import { router } from "expo-router";
+import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
 
 export default function x_servicio() {
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>Fontanero</Text>
+      <TouchableOpacity style={styles.backIconContainer}
+        onPress={() => {
+          router.push("../inicio/servicio")
+        }}
+      >
+        <Icon name="arrow-back" size={30} color="#fff" />
+      </TouchableOpacity>
+
+      <View style={styles.separator} />
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Fontanero</Text>
+      </View>
       <View style={styles.card}>
         <Text style={styles.description}>
           Nuestro equipo de fontaneros expertos está disponible para atender todas sus necesidades de fontanería, ofreciendo un servicio confiable y de alta calidad. Nos especializamos en:
@@ -40,14 +52,18 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 20,
-    textAlign: 'center',
     backgroundColor: '#29B6F6',
     padding: 10,
     borderRadius: 10,
+    marginBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerText: {
+    fontSize: 35,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
   },
   card: {
     backgroundColor: '#fff',
@@ -97,5 +113,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+
+  separator: {
+    marginTop: 20, // Adjust the value as needed to create the desired spacing
   },
 });

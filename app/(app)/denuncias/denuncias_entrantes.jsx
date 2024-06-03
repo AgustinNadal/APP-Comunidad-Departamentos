@@ -1,14 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
+import { router } from "expo-router";
 
 const windowWidth = Dimensions.get('window').width;
 
 export default function denuncias_entrantes() {
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backIconContainer}
+        onPress={() => {
+          router.push("../inicio/denuncia")
+        }}
+      >
+        <Icon name="arrow-back" size={30} color="#fff" />
+      </TouchableOpacity>
+
+      <View style={styles.separator} />
+
       <View style={styles.header}>
         <Text style={styles.headerText}>Denuncias entrantes</Text>
       </View>
+
       <View style={styles.card}>
         <Image 
           source={require('../../../assets/images/denuncia2.png')} // Replace with actual image URL
@@ -38,14 +51,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginBottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   headerText: {
-    fontSize: 24,
+    fontSize: 35,
     fontWeight: 'bold',
     color: '#fff',
+    textAlign: 'center',
   },
   card: {
     backgroundColor: '#fff',
@@ -80,5 +93,8 @@ const styles = StyleSheet.create({
   },
   iconText: {
     fontSize: 18,
+  },
+  separator: {
+    marginTop: 20, // Adjust the value as needed to create the desired spacing
   },
 });

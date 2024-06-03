@@ -1,9 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
+import { router } from "expo-router"
 
 export default function mis_reclamos() {
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backIconContainer}
+        onPress={() => {
+          router.push("../inicio/reclamo")
+        }}
+      >
+        <Icon name="arrow-back" size={30} color="#fff" />
+      </TouchableOpacity>
+
+      <View style={styles.separator} />
+
       <View style={styles.header}>
         <Text style={styles.headerText}>Mis reclamos</Text>
       </View>
@@ -33,14 +45,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginBottom: 20,
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   headerText: {
-    fontSize: 24,
+    fontSize: 35,
     fontWeight: 'bold',
     color: '#fff',
+    textAlign: 'center',
   },
   card: {
     backgroundColor: '#fff',
@@ -69,5 +81,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
     textAlign: 'left',
+  },
+  separator: {
+    marginTop: 20, // Adjust the value as needed to create the desired spacing
   },
 });
