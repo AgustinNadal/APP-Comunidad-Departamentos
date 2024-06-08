@@ -1,10 +1,27 @@
-import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from "react";
 import { router } from "expo-router";
 import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
+import { registerUser } from "../../services/userService";
 
 
 export default function register_screen() {
+  const [email, setEmail] = useState("");
+  const [dni, setDni] = useState("");
+  const [responseCode, setResponseCode] = useState(0);
+
+  const handleRegister = async () => {
+    await registerUser(email, dni, setResponseCode);
+    if (responseCode === 201) {
+      router.replace("../inicio/home");
+      
+    } else if (responseCode === 400) {
+      Alert.alert("Error", "No es un vecino. Contacte a la municipalidad");
+    }
+  };
+
+
+  
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backIconContainer}
@@ -17,11 +34,30 @@ export default function register_screen() {
 
       <View style={styles.card}>
         <Text style={styles.title}>REGISTRACIÓN</Text>
-        <TextInput style={styles.input} placeholder="DNI" />
-        <TextInput style={styles.input} placeholder="Email" />
+
+        <TextInput 
+          style={styles.input} 
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={(text) => setEmail(text)}
+        />
+
+
+        <TextInput 
+          style={styles.input} 
+          placeholder="DNI" 
+          autoCapitalize="none"
+          keyboardType='numeric'
+          autoCorrect={false}
+          onChangeText={(text) => setDni(text)}
+        />
+
         <TouchableOpacity style={styles.button}
           onPress={() =>{
-            router.push("/inicio/home")
+            //router.push("/inicio/home")
+            handleRegister();
           }}
         >
           <Text>Registrar</Text>

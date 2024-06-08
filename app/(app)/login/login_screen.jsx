@@ -1,11 +1,23 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
+import { loginUser } from "../../services/userService";
 
 export default function login_screen() {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [accces, setAccces] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    const result = await loginUser(accces, password);
+    if (result !== null) {
+      router.replace("../inicio/home");
+    } else {
+      Alert.alert("Error", "Usuario o contraseña incorrectos");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -28,6 +40,8 @@ export default function login_screen() {
               placeholder="usuario"
               autoCapitalize="none"
               autoCorrect={false}
+              value={accces}
+              onChangeText={setAccces}
             />
           </View>
 
@@ -39,6 +53,8 @@ export default function login_screen() {
               secureTextEntry={!passwordVisible}
               autoCapitalize="none"
               autoCorrect={false}
+              value={password}
+              onChangeText={setPassword}
             />
             <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
               <Ionicons name={passwordVisible ? "eye" : "eye-off"} size={20} color="gray" />
@@ -54,7 +70,7 @@ export default function login_screen() {
 
           <TouchableOpacity style={styles.button}
             onPress={() => {
-              router.push("../inicio/home")
+              handleLogin();
             }}
           >
             <Text style={styles.buttonText}>Iniciar Sesion</Text>
