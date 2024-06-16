@@ -21,7 +21,7 @@ export default function cambiar_password() {
         <TextInput style={styles.input} placeholder="Confirmar Contraseña" />
         <TouchableOpacity style={styles.button}
             onPress={() =>{
-                router.push("/inicio/home")
+                router.push("../inicio/home")
               }}
         >
           <Text>Confirmar</Text>

@@ -88,10 +88,10 @@ export default function login_inspector() {
           </View>
           <TouchableOpacity
             onPress={() => {
-              router.push("./recuperar_password")
+              router.push("./cambiar_password_inspector")
             }}
           >
-            <Text style={styles.forgotPassword}>¿Ha olvidado su contraseña?</Text>
+            <Text style={styles.forgotPassword}>¿Desea cambiar su contraseña?</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button}

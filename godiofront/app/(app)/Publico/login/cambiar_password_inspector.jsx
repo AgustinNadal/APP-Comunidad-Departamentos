@@ -7,12 +7,19 @@ import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente 
 
 export default function recuperar_password() {
   
-  const [mail, setMail] = useState('');
+  const [legajo, setLegajo] = useState('');
+  const [passwordActual, setPasswordActual] = useState('');
+  const [passwordNueva, setPasswordNueva] = useState('');
+  const [passwordNueva2, setPasswordNueva2] = useState('');
 
-  const handleRecuperarPassword = async () => {
+  const handleCambiarInspectorPassword = async () => {
     try {
-      const response = await axios.post(`http://10.0.2.2:8080/inicio/vecino/olvidecontrasenia?mail=${mail}`, {
-        mail: mail,
+      const response = await axios.post(`http://10.0.2.2:8080/inicio/cambiarPassword?legajo=${legajo}&passwordActual=${passwordActual}&passwordNueva=${passwordNueva}&passwordNueva2=${passwordNueva2}`, {
+        legajo: legajo,
+        passwordActual: passwordActual,
+        passwordNueva: passwordNueva,
+        passwordNueva2: passwordNueva2,
+
       });
  
       if (response.status === 200) {
@@ -43,17 +50,45 @@ export default function recuperar_password() {
         <Icon name="arrow-back" size={30} color="#fff" />
       </TouchableOpacity>
       <View style={styles.card}>
-        <Text style={styles.title}>RECUPERAR CONTRASEÑA</Text>
+        <Text style={styles.title}>CAMBIAR CONTRASEÑA</Text>
         <TextInput
           style={styles.input}
-          placeholder="correo electrónico"
+          placeholder="Legajo"
           autoCapitalize="none"
           autoCorrect={false}
-          value={mail}
-          onChangeText={setMail}
+          value={legajo}
+          onChangeText={setLegajo}
         />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Contrasenia actual"
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={passwordActual}
+          onChangeText={setPasswordActual}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Contraseña nueva"
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={passwordNueva}
+          onChangeText={setPasswordNueva}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Repite contraseña nueva"
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={passwordNueva2}
+          onChangeText={setPasswordNueva2}
+        />
+
         <TouchableOpacity style={styles.button}
-          onPress={handleRecuperarPassword}
+          onPress={handleCambiarInspectorPassword}
         >
           <Text>Confirmar</Text>
         </TouchableOpacity>

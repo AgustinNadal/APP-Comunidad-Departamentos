@@ -43,7 +43,7 @@ export default function Home() {
       <View style={styles.header}>
         <Text style={styles.headerText}>
           <Text style={styles.headerTextBold}>Hola </Text>
-          Invitado
+          Vecino
           <Text style={styles.headerTextLight}> Bienvenido</Text>
         </Text>
         <TouchableOpacity onPress={() => router.push("../login/login_screen")}>

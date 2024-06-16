@@ -36,7 +36,7 @@ export default function x_servicio() {
           <Text style={styles.phoneNumber}>1167539799</Text>
         </View>
         <TouchableOpacity style={styles.button}
-            onPress={() => router.push("/inicio/home")}
+            onPress={() => router.push("../inicio/home")}
         >
           <Text style={styles.buttonText}>CONTRATAR</Text>
         </TouchableOpacity>

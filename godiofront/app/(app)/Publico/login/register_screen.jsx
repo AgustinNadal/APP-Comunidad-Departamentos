@@ -21,7 +21,8 @@ export default function RegisterScreen() {
 
       // Manejo de la respuesta
       if (response.status === 200) {
-        router.push("/inicio/home");
+        router.push("../inicio/home");
+        Alert.alert('Registro exitoso', 'El usuario fue registrado correctamente.');
       } else {
         Alert.alert('Error', 'No se pudo completar el registro.');
       }
