@@ -1,10 +1,24 @@
 import { router } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Icon from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function login_screen() {
+export default function home_screen() {
+  const [mail, setMail] = useState('');
+
+  useEffect(() => {
+    const getUserMail = async () => {
+      const userMail = await AsyncStorage.getItem('userMail');
+      if (userMail) {
+        setMail(userMail);
+      }
+    };
+
+    getUserMail();
+  }, []);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backIconContainer}
@@ -17,12 +31,14 @@ export default function login_screen() {
       <View style={styles.mainContent}>
         <View style={styles.iconContainer}>
           <Ionicons name="person-circle" size={200} color="white" />
-          <Text style={styles.welcomeText}>Bienvenido Vecino</Text>
+          <Text style={styles.welcomeText}>             Bienvenido              {mail}</Text>
         </View>
         <View style={styles.inputContainer}>
           <TouchableOpacity style={styles.createAccountButton}
-            onPress={() => {
-              router.push("../../../Publico/inicio/home")
+            onPress={async () => {
+              // Elimina el mail al cerrar sesión
+              await AsyncStorage.removeItem('userMail');
+              router.push("../../../Publico/inicio/home");
               Alert.alert('Exito', 'Cierre de sesion exitoso.');
             }}
           >

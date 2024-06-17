@@ -4,6 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "reac
 import { Ionicons } from "@expo/vector-icons";
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function login_screen() {
   const [contrasenia, setContrasenia] = useState('');
@@ -18,6 +19,8 @@ export default function login_screen() {
       });
 
       if (response.status === 200) {
+        // Guarda el mail en AsyncStorage
+        await AsyncStorage.setItem('userMail', mail);
         router.push("../../../Vecino/inicio/home");
         Alert.alert('Exito', 'Inicio de sesion exitoso.');
       } else {

@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente 
 import { router } from "expo-router";
 
 export default function crear_denuncia() {
+  const [mail, setMail] = useState('');
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [fecha, setFecha] = useState('');
@@ -45,6 +46,13 @@ export default function crear_denuncia() {
         <Text style={styles.headerText}>Datos</Text>
       </View>
       <View style={styles.contentContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Tu correo electronico"
+          value={mail}
+          onChangeText={setMail}
+        />
+
         <TextInput
           style={styles.input}
           placeholder="Nombre"
