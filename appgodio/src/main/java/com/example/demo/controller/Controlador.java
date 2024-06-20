@@ -33,6 +33,9 @@ public class Controlador {
 	@Autowired
 	ServicioComercioService comercioservice;
 
+	@Autowired
+	EmailSenderService emailservice;
+
 	@PostMapping("/loginInspector")
 	public ResponseEntity<String> loginInspector(@RequestParam Integer legajo, @RequestParam String password) {
 		boolean resultado = personalservice.loginInspector(legajo, password);
@@ -52,6 +55,7 @@ public class Controlador {
 	public ResponseEntity<String> register(@RequestParam String documento, @RequestParam String mail) {
 		String resultado = vecinoservice.register2(documento, mail);
 		if (resultado.equals("Registro exitoso")) {
+			emailservice.sendEmail("agustinjnadal@gmail.com", "Registro exitoso", "Registro exitoso");
 			return ResponseEntity.ok(resultado);
 		} else {
 			return ResponseEntity.status(400).body(resultado);
@@ -82,6 +86,7 @@ public class Controlador {
 	public ResponseEntity<String> olvideContrasenia(@RequestParam String mail) {
 		String resultado = vecinoservice.olvideContrasenia(mail);
 		if (resultado.equals("Correo enviado correctamente")) {
+			
 			return ResponseEntity.ok(resultado);
 		} else {
 			return ResponseEntity.status(400).body(resultado);

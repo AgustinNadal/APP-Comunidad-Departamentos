@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.controller.EmailSenderService;
 import com.example.demo.modelo.Vecino;
 import com.example.demo.modelo.Vecinoregistrado;
 import com.example.demo.repository.VecinoRepository;
@@ -19,6 +20,9 @@ public class VecinoService {
 
 	@Autowired
 	VecinoregistradoRepository repoVecinoRegistrado;
+
+	@Autowired
+	EmailSenderService emailservice;
 
 	public String register2(String documento, String mail) {
 		Optional<Vecinoregistrado> vecinoYaRegistrado = repoVecinoRegistrado.findById(documento);
@@ -56,6 +60,7 @@ public class VecinoService {
 		if (vecino == null) {
 			return "No estas registrado";
 		} else {
+			emailservice.sendEmail("agustinjnadal@gmail.com", "Olvide mi contrasenia", "Contrasenia Olvidada: " + vecino.getContrasenia());
 			return "Correo enviado correctamente";
 		}
 	}
