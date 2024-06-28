@@ -11,3 +11,4 @@ public interface VecinoregistradoRepository extends JpaRepository<Vecinoregistra
 	public List<Vecinoregistrado> findByMail(String mail);
 
 }
+ 

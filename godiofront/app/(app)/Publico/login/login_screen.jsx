@@ -13,16 +13,25 @@ export default function login_screen() {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post(`http://10.0.2.2:8080/inicio/loginVecino?mail=${mail}&contrasenia=${contrasenia}`, {
+      const responseLogin = await axios.post(`http://10.0.2.2:8080/inicio/loginVecino?mail=${mail}&contrasenia=${contrasenia}`, {
         contrasenia: contrasenia,
         mail: mail,
       });
 
-      if (response.status === 200) {
+      
+
+      if (responseLogin.status === 200) {
+        // Obtiene el documento del vecino
+        const responseDocumento = await axios.get(`http://10.0.2.2:8080/inicio/vecino/documento-por-mail?mail=${mail}`, {
+          mail: mail,
+        });
+
         // Guarda el mail en AsyncStorage
         await AsyncStorage.setItem('userMail', mail);
+        await AsyncStorage.setItem('userDocumento', responseDocumento.data);
         router.push("../../../Vecino/inicio/home");
         Alert.alert('Exito', 'Inicio de sesion exitoso.');
+
       } else {
         Alert.alert('Error', 'No se pudo completar el inicio de sesion.');
       }

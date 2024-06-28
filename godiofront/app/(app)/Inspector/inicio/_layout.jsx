@@ -55,18 +55,7 @@ export default function TabLayout() {
         }}
       />
 
-      <Tabs.Screen
-        name="denuncia"
-        options={{
-          title: 'Denuncias',
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon 
-              name={focused ? 'person-remove' : 'person-remove-outline'} 
-              color={focused ? activeColor : inactiveColor} 
-            />
-          ),
-        }}
-      />
+
     </Tabs>
   );
 }

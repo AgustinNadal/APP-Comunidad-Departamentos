@@ -50,7 +50,7 @@ public class VecinoService {
 			}
 		}
 	}
-
+ 
 	public String olvideContrasenia(String mail) {
 		List<Vecinoregistrado> vecinosConEseMail = repoVecinoRegistrado.findByMail(mail);
 		Vecinoregistrado vecino = null;
@@ -86,5 +86,16 @@ public class VecinoService {
 			}
 		}
 	}
+
+	public String getDocumentoByMail(String mail) {
+        List<Vecinoregistrado> vecinosConEseMail = repoVecinoRegistrado.findByMail(mail);
+        if (vecinosConEseMail.isEmpty()) {
+            return "No hay vecinos registrados con ese mail";
+        } else {
+            // Asumiendo que cada mail es único y hay solo un vecino con ese mail
+            Vecinoregistrado vecino = vecinosConEseMail.get(0);
+            return vecino.getDocumento();
+        }
+    }
 
 }

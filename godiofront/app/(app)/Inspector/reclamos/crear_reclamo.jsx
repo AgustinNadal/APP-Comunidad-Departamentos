@@ -7,12 +7,10 @@ import { router } from "expo-router";
 
 
 export default function crear_reclamo() {
-  const [mail, setMail] = useState(''); // Se inicializa el estado [documento, setDocumento] con un string vacío
-  const [titulo, setTitulo] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [fecha, setFecha] = useState('');
-  const [hora, setHora] = useState('');
+  const [documento, setDocumento] = useState(''); // Se inicializa el estado [documento, setDocumento] con un string vacío
   const [sitio, setSitio] = useState('');
+  const [desperfecto, setDesperfecto] = useState('');
+  const [descripcion, setDescripcion] = useState('');
   const [fotos, setFotos] = useState([]);
 
 
@@ -51,16 +49,24 @@ export default function crear_reclamo() {
       <View style={styles.contentContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Correo electronico"
-          value={mail}
-          onChangeText={setMail}
+          placeholder="Documento"
+          value={documento}
+          onChangeText={setDocumento}
         />
 
         <TextInput
           style={styles.input}
-          placeholder="Titulo del reclamo"
-          value={titulo}
-          onChangeText={setTitulo}
+          placeholder="Sitio"
+          value={sitio}
+          onChangeText={setSitio}
+        />
+
+
+        <TextInput
+          style={styles.input}
+          placeholder="Desperfecto"
+          value={desperfecto}
+          onChangeText={setDesperfecto}
         />
 
         <View style={styles.separator} />
@@ -72,34 +78,9 @@ export default function crear_reclamo() {
           onChangeText={setDescripcion}
           multiline
         />
-
-        <View style={styles.separator} />
-
-        <View style={styles.row}>
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="Fecha"
-            value={fecha}
-            onChangeText={setFecha}
-          />
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="Hora"
-            value={hora}
-            onChangeText={setHora}
-          />
-        </View>
         
         <View style={styles.separator} />
         
-        <TextInput
-          style={styles.input}
-          placeholder="Sitio"
-          value={sitio}
-          onChangeText={setSitio}
-        />
-
-        <View style={styles.separator} />
         
         <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
           <Text style={styles.imagePickerText}>

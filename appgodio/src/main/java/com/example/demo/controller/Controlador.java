@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.modelo.Denuncias;
 import com.example.demo.modelo.Personal;
+import com.example.demo.modelo.Reclamos;
 import com.example.demo.modelo.ServicioComercio;
 import com.example.demo.modelo.ServicioProfesional;
+import com.example.demo.service.DenunciasService;
 import com.example.demo.service.PersonalService;
+import com.example.demo.service.ReclamoService;
 import com.example.demo.service.ServicioComercioService;
 import com.example.demo.service.ServicioProfesionalService;
 import com.example.demo.service.VecinoService;
@@ -35,6 +39,12 @@ public class Controlador {
 
 	@Autowired
 	EmailSenderService emailservice;
+
+	@Autowired
+	ReclamoService reclamoservice;
+
+	@Autowired
+	DenunciasService denunciaservice;
 
 	@PostMapping("/loginInspector")
 	public ResponseEntity<String> loginInspector(@RequestParam Integer legajo, @RequestParam String password) {
@@ -93,4 +103,50 @@ public class Controlador {
 		}
 	}
 
+	@GetMapping("/vecino/documento-por-mail")
+    public ResponseEntity<String> obtenerDocumentoPorMail(@RequestParam String mail) {
+        String documento = vecinoservice.getDocumentoByMail(mail);
+        return ResponseEntity.ok(documento);
+    }
+
+	@PostMapping("/reclamo")
+	public ResponseEntity<String> reclamo(@RequestParam String documento, @RequestParam String idsitio,
+			@RequestParam String iddesperfecto, @RequestParam String descripcion) {
+		String resultado = reclamoservice.registrarReclamo(documento, idsitio, iddesperfecto, descripcion);
+		if (resultado.equals("Reclamo registrado")) {
+			return ResponseEntity.ok(resultado);
+		} else {
+			return ResponseEntity.status(400).body(resultado);
+		}
+	}
+
+
+	@GetMapping("/reclamo/mis-reclamos")
+	public List<Reclamos> misReclamos(@RequestParam String documento) {
+		return (List<Reclamos>) reclamoservice.listarReclamoPorDocumento(documento);
+	}
+
+
+	@GetMapping("/reclamo/todos-reclamos")
+	public List<Reclamos> todosReclamos() {
+		return (List<Reclamos>) reclamoservice.listarTodosReclamos();
+	}
+
+
+	@PostMapping("/denuncia")
+	public ResponseEntity<String> denuncia(@RequestParam String documento, @RequestParam String idsitio,
+			@RequestParam String descripcion) {
+		String resultado = denunciaservice.registrarDenuncia(documento, idsitio, descripcion);
+		if (resultado.equals("Denuncia registrada")) {
+			return ResponseEntity.ok(resultado);
+		} else {
+			return ResponseEntity.status(400).body(resultado);
+		}
+	}
+
+
+	@GetMapping("/denuncia/mis-denuncias")
+	public List<Denuncias> misDenuncias(@RequestParam String documento) {
+		return (List<Denuncias>) denunciaservice.listarDenunciasPorDocumento(documento);
+	}
 }

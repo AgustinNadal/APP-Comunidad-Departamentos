@@ -1,19 +1,59 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect} from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
 import { router } from "expo-router";
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 export default function crear_reclamo() {
-  const [mail, setMail] = useState(''); // Se inicializa el estado [documento, setDocumento] con un string vacío
-  const [titulo, setTitulo] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [fecha, setFecha] = useState('');
-  const [hora, setHora] = useState('');
+  const [documento, setDocumento] = useState(''); // Se inicializa el estado [documento, setDocumento] con un string vacío
   const [sitio, setSitio] = useState('');
+  const [desperfecto, setDesperfecto] = useState('');
+  const [descripcion, setDescripcion] = useState('');
   const [fotos, setFotos] = useState([]);
+
+  useEffect(() => {
+    const getUserDocumento = async () => {
+      const userDocumento = await AsyncStorage.getItem('userDocumento');
+      if (userDocumento) {
+        setDocumento(userDocumento);
+      }
+    };
+
+    getUserDocumento();
+  }, []);
+
+
+  const handleCrearReclamo = async () => {
+    try {
+      const response = await axios.post(`http://10.0.2.2:8080/inicio/reclamo?documento=${documento}&idsitio=${sitio}&iddesperfecto=${desperfecto}&descripcion=${descripcion}`, {
+        documento: documento,
+        sitio: sitio,
+        desperfecto: desperfecto,
+        descripcion: descripcion,
+        
+      });
+
+      if (response.status === 200) {
+        router.push("../../../Vecino/inicio/home");
+        Alert.alert('Exito', 'Se creo con exito el reclamo.');
+      } else {
+        Alert.alert('Error', 'No se pudo completar el registro del reclamo.');
+      }
+    } catch (error) {
+      if (error.response) {
+        Alert.alert('Error', `El servidor respondió con el estado ${error.response.status}: ${error.response.data}`);
+      } else if (error.request) {
+        Alert.alert('Error', 'No se recibió respuesta del servidor.');
+      } else {
+        Alert.alert('Error', `Error al configurar la solicitud: ${error.message}`);
+      }
+      console.error(error.config);
+    }
+  };
 
 
   const pickImage = async () => {
@@ -28,10 +68,6 @@ export default function crear_reclamo() {
     }
   };
 
-  const handleEnviar = () => {
-    // Lógica para manejar el envío del formulario
-
-  };
 
   return (
     <View style={styles.container}>
@@ -49,18 +85,21 @@ export default function crear_reclamo() {
         <Text style={styles.headerText}>Datos</Text>
       </View>
       <View style={styles.contentContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Correo electronico"
-          value={mail}
-          onChangeText={setMail}
-        />
+        
 
         <TextInput
           style={styles.input}
-          placeholder="Titulo del reclamo"
-          value={titulo}
-          onChangeText={setTitulo}
+          placeholder="Sitio"
+          value={sitio}
+          onChangeText={setSitio}
+        />
+
+
+        <TextInput
+          style={styles.input}
+          placeholder="Desperfecto"
+          value={desperfecto}
+          onChangeText={setDesperfecto}
         />
 
         <View style={styles.separator} />
@@ -72,34 +111,9 @@ export default function crear_reclamo() {
           onChangeText={setDescripcion}
           multiline
         />
-
-        <View style={styles.separator} />
-
-        <View style={styles.row}>
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="Fecha"
-            value={fecha}
-            onChangeText={setFecha}
-          />
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="Hora"
-            value={hora}
-            onChangeText={setHora}
-          />
-        </View>
         
         <View style={styles.separator} />
         
-        <TextInput
-          style={styles.input}
-          placeholder="Sitio"
-          value={sitio}
-          onChangeText={setSitio}
-        />
-
-        <View style={styles.separator} />
         
         <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
           <Text style={styles.imagePickerText}>
@@ -107,9 +121,12 @@ export default function crear_reclamo() {
           </Text>
         </TouchableOpacity>
         <Text style={styles.imagePickerNote}>Máximo: 5 fotos</Text>
-        <TouchableOpacity style={styles.button} onPress={handleEnviar}>
+
+        <TouchableOpacity style={styles.button} 
+          onPress={handleCrearReclamo}>
           <Text style={styles.buttonText}>ENVIAR</Text>
         </TouchableOpacity>
+
       </View>
     </View>
   );
