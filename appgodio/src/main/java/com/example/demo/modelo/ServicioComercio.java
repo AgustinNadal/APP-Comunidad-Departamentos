@@ -1,109 +1,92 @@
 package com.example.demo.modelo;
 
-import java.util.List;
-
-import jakarta.persistence.Column;
+import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "servicioscomercios")
 public class ServicioComercio {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idserviciocomercio")
-	private Integer idServicioComercio;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idserviciocomercio;
 
-	@Column(name = "direccion")
-	private String direccion;
+    @Basic
+    private String direccion;
 
-	@Column(name = "contacto")
-	private String contacto;
+    @Basic
+    private String contacto;
 
-	@Column(name = "descripcion")
-	private String descripcion;
+    @Basic
+    private String descripcion;
 
-	@ManyToOne
-	@JoinColumn(name = "documento", referencedColumnName = "documento")
-	private Vecinoregistrado vecino;
+    @Basic
+    private String documento;
 
-	@Column(name = "estado")
-	private String estado;
+    @Basic
+    private String estado;
 
-	public ServicioComercio() {
+    public ServicioComercio() {}
 
-	}
+    public ServicioComercio(Integer idserviciocomercio, String direccion, String contacto, String descripcion, String documento, String estado) {
+        this.idserviciocomercio = idserviciocomercio;
+        this.direccion = direccion;
+        this.contacto = contacto;
+        this.descripcion = descripcion;
+        this.documento = documento;
+        this.estado = estado;
+    }
 
-	public ServicioComercio(String direccion, String contacto, String descripcion, Vecinoregistrado vecino,
-			String estado) {
-		super();
-		this.idServicioComercio = 00;
-		this.direccion = direccion;
-		this.contacto = contacto;
-		this.descripcion = descripcion;
-		this.vecino = vecino;
-		this.estado = estado;
-	}
+    public Integer getIdserviciocomercio() {
+        return idserviciocomercio;
+    }
 
-	public Integer getIdServicioComercio() {
-		return idServicioComercio;
-	}
+    public void setIdserviciocomercio(Integer idserviciocomercio) {
+        this.idserviciocomercio = idserviciocomercio;
+    }
 
-	public void setIdServicioComercio(Integer idServicioComercio) {
-		this.idServicioComercio = idServicioComercio;
-	}
+    public String getDireccion() {
+        return direccion;
+    }
 
-	public String getDireccion() {
-		return direccion;
-	}
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
+    public String getContacto() {
+        return contacto;
+    }
 
-	public String getContacto() {
-		return contacto;
-	}
+    public void setContacto(String contacto) {
+        this.contacto = contacto;
+    }
 
-	public void setContacto(String contacto) {
-		this.contacto = contacto;
-	}
+    public String getDescripcion() {
+        return descripcion;
+    }
 
-	public String getDescripcion() {
-		return descripcion;
-	}
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
+    public String getDocumento() {
+        return documento;
+    }
 
-	public Vecinoregistrado getVecino() {
-		return vecino;
-	}
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
 
-	public void setVecino(Vecinoregistrado vecino) {
-		this.vecino = vecino;
-	}
+    public String getEstado() {
+        return estado;
+    }
 
-	public String getEstado() {
-		return estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	@Override
-	public String toString() {
-		return "ServicioComercio [idServicioComercio=" + idServicioComercio + ", direccion=" + direccion + ", contacto="
-				+ contacto + ", descripcion=" + descripcion + ", vecino=" + vecino.getDocumento() + ", estado=" + estado
-				+ "]";
-	}
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
 }

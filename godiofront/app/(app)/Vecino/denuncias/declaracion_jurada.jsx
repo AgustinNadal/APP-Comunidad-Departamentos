@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 
-export default function crear_denuncia() {
+export default function declaracion_jurada() {
 
   const [iddenuncia, setIdDenuncia] = useState('');
 

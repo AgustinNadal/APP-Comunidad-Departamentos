@@ -1,142 +1,128 @@
 package com.example.demo.modelo;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "serviciosprofesionales")
 public class ServicioProfesional {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idservicioprofesional;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idservicioprofesional;
 
-	@Column(name = "nombre")
-	private String nombre;
+    @Basic
+    private String nombre;
 
-	@Column(name = "apellido")
-	private String apellido;
+    @Basic
+    private String apellido;
 
-	@Column(name = "contacto")
-	private String contacto;
+    @Basic
+    private String contacto;
 
-	@Column(name = "horario")
-	private String horario;
+    @Basic
+    private String horario;
 
-	@Column(name = "rubro")
-	private String rubro;
+    @Basic
+    private String rubro;
 
-	@Column(name = "descripcion")
-	private String descripcion;
+    @Basic
+    private String descripcion;
 
-	@ManyToOne
-	@JoinColumn(name = "documento", referencedColumnName = "documento", nullable = false)
-	private Vecinoregistrado vecino;
+    @Basic
+    private String documento;
 
-	@Column(name = "estado")
-	private String estado;
+    @Basic
+    private String estado;
 
-	public ServicioProfesional() {
+    public ServicioProfesional() {}
 
-	}
+    public ServicioProfesional(Integer idservicioprofesional, String nombre, String apellido, String contacto, String horario, String rubro, String descripcion, String documento, String estado) {
+        this.idservicioprofesional = idservicioprofesional;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.contacto = contacto;
+        this.horario = horario;
+        this.rubro = rubro;
+        this.descripcion = descripcion;
+        this.documento = documento;
+        this.estado = estado;
+    }
 
-	public ServicioProfesional(String nombre, String apellido, String contacto, String horario, String rubro,
-			String descripcion, Vecinoregistrado vecino, String estado) {
-		super();
-		this.idservicioprofesional = idservicioprofesional;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.contacto = contacto;
-		this.horario = horario;
-		this.rubro = rubro;
-		this.descripcion = descripcion;
-		this.vecino = vecino;
-		this.estado = estado;
-	}
+    public Integer getIdservicioprofesional() {
+        return idservicioprofesional;
+    }
 
-	public Integer getIdservicioprofesional() {
-		return idservicioprofesional;
-	}
+    public void setIdservicioprofesional(Integer idservicioprofesional) {
+        this.idservicioprofesional = idservicioprofesional;
+    }
 
-	public void setIdservicioprofesional(Integer idservicioprofesional) {
-		this.idservicioprofesional = idservicioprofesional;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	public String getNombre() {
-		return nombre;
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public String getApellido() {
+        return apellido;
+    }
 
-	public String getApellido() {
-		return apellido;
-	}
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
 
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
+    public String getContacto() {
+        return contacto;
+    }
 
-	public String getContacto() {
-		return contacto;
-	}
+    public void setContacto(String contacto) {
+        this.contacto = contacto;
+    }
 
-	public void setContacto(String contacto) {
-		this.contacto = contacto;
-	}
+    public String getHorario() {
+        return horario;
+    }
 
-	public String getHorario() {
-		return horario;
-	}
+    public void setHorario(String horario) {
+        this.horario = horario;
+    }
 
-	public void setHorario(String horario) {
-		this.horario = horario;
-	}
+    public String getRubro() {
+        return rubro;
+    }
 
-	public String getRubro() {
-		return rubro;
-	}
+    public void setRubro(String rubro) {
+        this.rubro = rubro;
+    }
 
-	public void setRubro(String rubro) {
-		this.rubro = rubro;
-	}
+    public String getDescripcion() {
+        return descripcion;
+    }
 
-	public String getDescripcion() {
-		return descripcion;
-	}
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
+    public String getDocumento() {
+        return documento;
+    }
 
-	public Vecinoregistrado getVecino() {
-		return vecino;
-	}
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
 
-	public void setVecino(Vecinoregistrado vecino) {
-		this.vecino = vecino;
-	}
+    public String getEstado() {
+        return estado;
+    }
 
-	public String getEstado() {
-		return estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	@Override
-	public String toString() {
-		return "ServicioProfesional [idservicioprofesional=" + idservicioprofesional + ", nombre=" + nombre
-				+ ", apellido=" + apellido + ", contacto=" + contacto + ", horario=" + horario + ", rubro=" + rubro
-				+ ", descripcion=" + descripcion + ", vecino=" + vecino + ", estado=" + estado + "]";
-	}
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
 }

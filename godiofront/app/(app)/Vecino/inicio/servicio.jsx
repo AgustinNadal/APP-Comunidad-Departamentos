@@ -57,7 +57,7 @@ export default function servicio() {
           <Text style={styles.buttonText}>Categoria</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}
-          onPress={() => router.push("../servicios/ofrecer_servicio")}
+          onPress={() => router.push("../servicios/elegir_entre_servicios")}
         >
           <Text style={styles.buttonText}>Ofrecer servicios</Text>
         </TouchableOpacity>

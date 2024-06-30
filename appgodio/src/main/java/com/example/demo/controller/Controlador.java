@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.modelo.Denuncias;
 import com.example.demo.modelo.Personal;
-import com.example.demo.modelo.Reclamos;
 import com.example.demo.modelo.ServicioComercio;
 import com.example.demo.modelo.ServicioProfesional;
+import com.example.demo.modelo.Reclamos;
+
 import com.example.demo.service.DenunciasService;
-import com.example.demo.service.PersonalService;
-import com.example.demo.service.ReclamoService;
 import com.example.demo.service.ServicioComercioService;
 import com.example.demo.service.ServicioProfesionalService;
+import com.example.demo.service.PersonalService;
+import com.example.demo.service.ReclamoService;
 import com.example.demo.service.VecinoService;
 
 @RestController
@@ -33,12 +34,6 @@ public class Controlador {
 	VecinoService vecinoservice;
 
 	@Autowired
-	ServicioProfesionalService profesionalservice;
-
-	@Autowired
-	ServicioComercioService comercioservice;
-
-	@Autowired
 	EmailSenderService emailservice;
 
 	@Autowired
@@ -46,6 +41,12 @@ public class Controlador {
 
 	@Autowired
 	DenunciasService denunciaservice;
+
+	@Autowired
+	ServicioComercioService serviciocomercioservice;
+
+	@Autowired
+	ServicioProfesionalService servicioprofesionalservice;
 
 	@PostMapping("/loginInspector")
 	public ResponseEntity<String> loginInspector(@RequestParam Integer legajo, @RequestParam String password) {
@@ -86,17 +87,6 @@ public class Controlador {
 		}
 	}
 
-
-	@GetMapping("/servicios/profesionales")
-	public List<ServicioProfesional> serviciosProfesionales() {
-		return profesionalservice.serviciosProfesionalesHabilitados();
-	}
-
-
-	@GetMapping("/servicios/comercios")
-	public List<ServicioComercio> servicioComercios() {
-		return comercioservice.serviciosComerciosHabilitados();
-	}
 
 
 	@PostMapping("/vecino/olvidecontrasenia")
@@ -192,4 +182,32 @@ public class Controlador {
 		String iddenuncia = denunciaservice.obtnerIdDenuncia(documento, idsitio, descripcion, documentodenunciado);
 		return ResponseEntity.ok(iddenuncia);
 	}
+
+
+	@PostMapping("/servicio/comercio")
+	public ResponseEntity<String> servicioComercio(@RequestParam String direccion, @RequestParam String contacto,
+			@RequestParam String descripcion, @RequestParam String documento) {
+		String resultado = serviciocomercioservice.registrarServicioComercio(direccion, contacto, descripcion, documento);
+		if (resultado.equals("Servicio de comercio registrado")) {
+			return ResponseEntity.ok(resultado);
+		} else {
+			return ResponseEntity.status(400).body(resultado);
+		}
+	}
+
+	@PostMapping("/servicio/profesional")
+	public ResponseEntity<String> servicioProfesional(@RequestParam String nombre, @RequestParam String apellido,
+			@RequestParam String contacto, @RequestParam String horario, @RequestParam String rubro,
+			@RequestParam String descripcion, @RequestParam String documento) {
+		String resultado = servicioprofesionalservice.registrarServicioProfesional(nombre, apellido, contacto, horario,
+				rubro, descripcion, documento);
+		if (resultado.equals("Servicio profesional registrado")) {
+			return ResponseEntity.ok(resultado);
+		} else {
+			return ResponseEntity.status(400).body(resultado);
+		}
+	}
+
+
+
 }

@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente 
 import { router } from "expo-router";
 
 
-export default function OfrecerServicio() {
+export default function OfrecerProfesion() {
   const [titulo, setTitulo] = useState('');
   const [telefono, setTelefono] = useState('');
   const [categoria, setCategoria] = useState('');
