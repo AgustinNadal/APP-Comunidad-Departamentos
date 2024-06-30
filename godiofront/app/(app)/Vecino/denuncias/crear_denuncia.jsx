@@ -1,3 +1,5 @@
+// Importa las librerías necesarias y los componentes
+
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Alert} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -38,17 +40,30 @@ export default function crear_denuncia() {
 
   const handleCrearDenuncia = async () => {
     try {
-      const response = await axios.post(`http://10.0.2.2:8080/inicio/denuncia?documento=${documento}&idsitio=${sitio}&descripcion=${descripcion}&documentodenunciado=${documentodenunciado}`, {
+      const responseCargarDenuncia = await axios.post(`http://10.0.2.2:8080/inicio/denuncia?documento=${documento}&idsitio=${sitio}&descripcion=${descripcion}&documentodenunciado=${documentodenunciado}`, {
         documento: documento,
         sitio: sitio,
         descripcion: descripcion,
         documentodenunciado: documentodenunciado,
-        
       });
 
-      if (response.status === 200) {
-        router.push("../../../Vecino/inicio/home");
-        Alert.alert('Exito', 'Se creo con exito la denuncia.');
+      if (responseCargarDenuncia.status === 200) {
+        const responseIdDenuncia = await axios.get(`http://10.0.2.2:8080/inicio/denuncia/obtener-id-denuncia?documento=${documento}&idsitio=${sitio}&descripcion=${descripcion}&documentodenunciado=${documentodenunciado}`, {
+          documento: documento,
+          sitio: sitio,
+          descripcion: descripcion,
+          documentodenunciado: documentodenunciado,
+        });
+
+        // Convierte responseIdDenuncia.data a cadena antes de almacenarlo en AsyncStorage
+        const idDenunciaString = String(responseIdDenuncia.data);
+        await AsyncStorage.setItem('userIdDenuncia', idDenunciaString);
+
+        // Utiliza router para navegar a la siguiente pantalla
+        router.push("../../../Vecino/denuncias/declaracion_jurada");
+
+        // Muestra una alerta de éxito
+        Alert.alert('Éxito', 'Se creó con éxito la denuncia.');
       } else {
         Alert.alert('Error', 'No se pudo completar la denuncia.');
       }

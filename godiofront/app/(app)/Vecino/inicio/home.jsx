@@ -14,7 +14,7 @@ export default function Home() {
     });
   };
 
-  const [isConnected, setIsConnected] = useState(true); // Assume connected initially
+  /*const [isConnected, setIsConnected] = useState(true); // Assume connected initially
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((networkState) => {
@@ -34,7 +34,7 @@ export default function Home() {
     // Show the home screen
     // Modify this part as needed
   
-}
+}*/
 
 
 

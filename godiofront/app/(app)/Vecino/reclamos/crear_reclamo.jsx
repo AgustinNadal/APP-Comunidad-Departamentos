@@ -1,12 +1,11 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
 import { router } from "expo-router";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
+import NetInfo from '@react-native-community/netinfo';
 
 export default function crear_reclamo() {
   const [documento, setDocumento] = useState(''); // Se inicializa el estado [documento, setDocumento] con un string vacío
@@ -14,6 +13,7 @@ export default function crear_reclamo() {
   const [desperfecto, setDesperfecto] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [fotos, setFotos] = useState([]);
+  const [isConnected, setIsConnected] = useState(true);
 
   useEffect(() => {
     const getUserDocumento = async () => {
@@ -24,19 +24,65 @@ export default function crear_reclamo() {
     };
 
     getUserDocumento();
+
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
+  const storeReclamoLocally = async (reclamo) => {
+    const reclamosGuardados = JSON.parse(await AsyncStorage.getItem('reclamosGuardados')) || [];
+    reclamosGuardados.push(reclamo);
+    await AsyncStorage.setItem('reclamosGuardados', JSON.stringify(reclamosGuardados));
+    Alert.alert('Guardado Localmente', 'El reclamo se ha guardado localmente debido a la falta de conexión.');
+  };
+
+  const sendStoredReclamos = async () => {
+    const reclamosGuardados = JSON.parse(await AsyncStorage.getItem('reclamosGuardados')) || [];
+    for (const reclamo of reclamosGuardados) {
+      try {
+        const response = await axios.post(`http://10.0.2.2:8080/inicio/reclamo?documento=${documento}&idsitio=${sitio}&iddesperfecto=${desperfecto}&descripcion=${descripcion}`, reclamo);
+        if (response.status === 200) {
+          Alert.alert('Exito', 'Se ha enviado un reclamo almacenado localmente.');
+        }
+      } catch (error) {
+        console.error('Error enviando reclamo almacenado localmente:', error);
+      }
+    }
+    await AsyncStorage.removeItem('reclamosGuardados');
+  };
+
+  useEffect(() => {
+    if (isConnected) {
+      sendStoredReclamos();
+    }
+  }, [isConnected]);
 
   const handleCrearReclamo = async () => {
+    const reclamo = {
+      documento,
+      sitio,
+      desperfecto,
+      descripcion,
+    };
+  
+    if (!documento || !sitio || !desperfecto || !descripcion) {
+      Alert.alert('Error', 'Todos los campos son obligatorios.');
+      return;
+    }
+  
+    if (!isConnected) {
+      await storeReclamoLocally(reclamo);
+      return;
+    }
+  
     try {
-      const response = await axios.post(`http://10.0.2.2:8080/inicio/reclamo?documento=${documento}&idsitio=${sitio}&iddesperfecto=${desperfecto}&descripcion=${descripcion}`, {
-        documento: documento,
-        sitio: sitio,
-        desperfecto: desperfecto,
-        descripcion: descripcion,
-        
-      });
-
+      const response = await axios.post(`http://10.0.2.2:8080/inicio/reclamo`, reclamo);
+  
       if (response.status === 200) {
         router.push("../../../Vecino/inicio/home");
         Alert.alert('Exito', 'Se creo con exito el reclamo.');
@@ -55,19 +101,17 @@ export default function crear_reclamo() {
     }
   };
 
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
       quality: 1,
     });
- 
+
     if (!result.canceled) {
       setFotos([...fotos, ...result.assets.map(asset => asset.uri)]);
     }
   };
-
 
   return (
     <View style={styles.container}>
@@ -85,7 +129,6 @@ export default function crear_reclamo() {
         <Text style={styles.headerText}>Datos</Text>
       </View>
       <View style={styles.contentContainer}>
-        
 
         <TextInput
           style={styles.input}
@@ -93,7 +136,6 @@ export default function crear_reclamo() {
           value={sitio}
           onChangeText={setSitio}
         />
-
 
         <TextInput
           style={styles.input}
@@ -111,10 +153,9 @@ export default function crear_reclamo() {
           onChangeText={setDescripcion}
           multiline
         />
-        
+
         <View style={styles.separator} />
-        
-        
+
         <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
           <Text style={styles.imagePickerText}>
             {fotos.length === 0 ? '0 fotos adjuntadas' : `${fotos.length} fotos adjuntadas`}
@@ -122,7 +163,7 @@ export default function crear_reclamo() {
         </TouchableOpacity>
         <Text style={styles.imagePickerNote}>Máximo: 5 fotos</Text>
 
-        <TouchableOpacity style={styles.button} 
+        <TouchableOpacity style={styles.button}
           onPress={handleCrearReclamo}>
           <Text style={styles.buttonText}>ENVIAR</Text>
         </TouchableOpacity>
@@ -160,7 +201,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'top',
   },
   input: {
     height: 60,
@@ -214,5 +255,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-
 });

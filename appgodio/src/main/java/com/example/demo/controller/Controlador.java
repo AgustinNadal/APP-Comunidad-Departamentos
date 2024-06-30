@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -164,4 +165,31 @@ public class Controlador {
 		return (List<Denuncias>) denunciaservice.buscarPorDocumentoDenunciado(documentodenunciado);
 	}
 	
+
+	@PutMapping("/denuncia/aceptar-responsabilidad")
+	public ResponseEntity<String> aceptarResponsabilidad(@RequestParam Long iddenuncia) {
+		String resultado = denunciaservice.aceptarResponsabilidad(iddenuncia);
+		if (resultado.equals("Denuncia aceptada")) {
+			return ResponseEntity.ok(resultado);
+		} else {
+			return ResponseEntity.status(400).body(resultado);
+		}
+	}
+
+	@PutMapping("/denuncia/rechazar-responsabilidad")
+	public ResponseEntity<String> rechazarResponsabilidad(@RequestParam Long iddenuncia) {
+		String resultado = denunciaservice.rechazarResponsabilidad(iddenuncia);
+		if (resultado.equals("Denuncia rechazada")) {
+			return ResponseEntity.ok(resultado);
+		} else {
+			return ResponseEntity.status(400).body(resultado);
+		}
+	}
+
+	@GetMapping("/denuncia/obtener-id-denuncia")
+	public ResponseEntity<String> obtenerIdDenuncia(@RequestParam String documento, @RequestParam String idsitio,
+			@RequestParam String descripcion, @RequestParam String documentodenunciado) {
+		String iddenuncia = denunciaservice.obtnerIdDenuncia(documento, idsitio, descripcion, documentodenunciado);
+		return ResponseEntity.ok(iddenuncia);
+	}
 }

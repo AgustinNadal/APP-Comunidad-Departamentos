@@ -64,7 +64,7 @@ export default function DenunciasEntrantes() {
         <ScrollView style={styles.dataContainer}>
           {data && data.map((denuncia, index) => (
             <View key={index} style={styles.card}>
-              <Text style={styles.cardTitle}>DNI del denunciante: <Text style={styles.cardText}>{denuncia.documento}</Text></Text>
+              <Text style={styles.cardTitle}>Usted ha sido denunciado </Text>
               <Text style={styles.cardSubtitle}>Ubicación del incidente: <Text style={styles.cardText}>{denuncia.idsitio}</Text></Text>
               <Text style={styles.cardDescription}>{denuncia.descripcion}</Text>
               <Text style={styles.cardTitle}>Tu documento: <Text style={styles.cardText}>{denuncia.documentoDenunciado}</Text></Text>

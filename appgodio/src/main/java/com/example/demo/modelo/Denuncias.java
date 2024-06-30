@@ -13,7 +13,7 @@ public class Denuncias {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer iddenuncias;
+    private Long iddenuncias;
 
     @Basic
     private String documento;
@@ -35,7 +35,7 @@ public class Denuncias {
 
     public Denuncias() {}
 
-    public Denuncias(Integer iddenuncias, String documento, String idsitio, String descripcion, String estado, String aceptaresponsabilidad, String documentoDenunciado) {
+    public Denuncias(Long iddenuncias, String documento, String idsitio, String descripcion, String estado, String aceptaresponsabilidad, String documentoDenunciado) {
         this.iddenuncias = iddenuncias;
         this.documento = documento;
         this.idsitio = idsitio;
@@ -45,11 +45,11 @@ public class Denuncias {
         this.documentodenunciado = documentoDenunciado;
     }
 
-    public Integer getIddenuncias() {
+    public Long getIddenuncias() {
         return iddenuncias;
     }
 
-    public void setIddenuncias(Integer iddenuncias) {
+    public void setIddenuncias(Long iddenuncias) {
         this.iddenuncias = iddenuncias;
     }
 
