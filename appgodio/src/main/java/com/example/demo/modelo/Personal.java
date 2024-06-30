@@ -77,7 +77,7 @@ public class Personal {
 	public String getSector() {
 		return sector;
 	}
-
+ 
 	public void setSector(String sector) {
 		this.sector = sector;
 	}

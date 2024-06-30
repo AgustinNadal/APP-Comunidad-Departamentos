@@ -11,5 +11,7 @@ import com.example.demo.modelo.Reclamos;
 public interface ReclamosRepository extends JpaRepository<Reclamos, Long>{
     public List<Reclamos> findByDocumento(String documento);
 
+    public List<Reclamos> findByLegajo(Integer legajo);
+
 }
  

@@ -1,9 +1,10 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function login_inspector() {
   const [password, setPassword] = useState('');
@@ -21,6 +22,7 @@ export default function login_inspector() {
 
       // Manejo de la respuesta
       if (response.status === 200) {
+        await AsyncStorage.setItem('userLegajo', legajo);
         router.push("../../../Inspector/inicio/home");
         Alert.alert('Exito', 'Inicio de sesion exitoso.');
 

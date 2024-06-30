@@ -33,4 +33,14 @@ public class PersonalService {
 		return repositorio.findAll();
 	}
 
+	public String getDocumentoByLegajo(Integer legajo) {
+        Optional<Personal> optionalPersonal = repositorio.findById(legajo);
+        if (optionalPersonal.isPresent()) {
+            return optionalPersonal.get().getDocumento();
+        } else {
+            return null; // o puedes lanzar una excepción si prefieres
+        }
+    }
+
 }
+ 

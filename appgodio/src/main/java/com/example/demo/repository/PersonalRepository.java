@@ -8,4 +8,6 @@ import com.example.demo.modelo.Personal;
 @Repository
 public interface PersonalRepository extends JpaRepository<Personal, Integer> {
 
+
 }
+ 

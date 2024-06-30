@@ -19,7 +19,7 @@ public class Reclamos {
     private String documento;
 
     @Basic
-    private String legajo;
+    private Integer legajo;
 
     @Basic
     private String idsitio;
@@ -38,7 +38,7 @@ public class Reclamos {
 
     public Reclamos() {}
 
-    public Reclamos(Integer idreclamo, String documento, String legajo, String idsitio, String iddesperfecto, String descripcion, String estado, Integer idreclamounificado) {
+    public Reclamos(Integer idreclamo, String documento, Integer legajo, String idsitio, String iddesperfecto, String descripcion, String estado, Integer idreclamounificado) {
         this.idreclamo = idreclamo;
         this.documento = documento;
         this.legajo = legajo;
@@ -65,11 +65,11 @@ public class Reclamos {
         this.documento = documento;
     }
 
-    public String getLegajo() {
+    public Integer getLegajo() {
         return legajo;
     }
 
-    public void setLegajo(String legajo) {
+    public void setLegajo(Integer legajo) {
         this.legajo = legajo;
     }
 

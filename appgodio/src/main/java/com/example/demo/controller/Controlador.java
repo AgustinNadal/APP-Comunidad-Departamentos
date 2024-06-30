@@ -65,6 +65,13 @@ public class Controlador {
 	}
 
 
+	@GetMapping("/inspectores/documento-por-legajo")
+	public ResponseEntity<String> obtenerDocumentoPorLegajo(@RequestParam Integer legajo) {
+		String documento = personalservice.getDocumentoByLegajo(legajo);
+		return ResponseEntity.ok(documento);
+	}
+
+
 	@PostMapping("/register")
 	public ResponseEntity<String> register(@RequestParam String documento, @RequestParam String mail) {
 		String resultado = vecinoservice.register2(documento, mail);
@@ -118,11 +125,28 @@ public class Controlador {
 			return ResponseEntity.status(400).body(resultado);
 		}
 	}
-
+	
+	@PostMapping("/reclamo/personal")
+	public ResponseEntity<String> reclamoPersonal(@RequestParam Integer legajo, @RequestParam String idsitio,
+			@RequestParam String iddesperfecto, @RequestParam String descripcion) {
+		String resultado = reclamoservice.registrarReclamoPersonal(legajo, idsitio, iddesperfecto, descripcion);
+		if (resultado.equals("Reclamo registrado")) {
+			return ResponseEntity.ok(resultado);
+		} else {
+			return ResponseEntity.status(400).body(resultado);
+		}
+	}
+ 
 
 	@GetMapping("/reclamo/mis-reclamos")
 	public List<Reclamos> misReclamos(@RequestParam String documento) {
 		return (List<Reclamos>) reclamoservice.listarReclamoPorDocumento(documento);
+	}
+	
+
+	@GetMapping("/reclamo/mis-reclamos-personal")
+	public List<Reclamos> misReclamosPersonal(@RequestParam Integer legajo) {
+		return (List<Reclamos>) reclamoservice.listarReclamoPorLegajo(legajo);
 	}
 
 
@@ -207,6 +231,8 @@ public class Controlador {
 			return ResponseEntity.status(400).body(resultado);
 		}
 	}
+
+
 
 
 

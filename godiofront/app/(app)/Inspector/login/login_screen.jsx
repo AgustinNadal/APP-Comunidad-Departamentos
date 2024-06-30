@@ -1,10 +1,27 @@
 import { router } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Icon from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function login_screen() {
+  const [legajo, setLegajo] = useState('');
+
+  useEffect(() => {
+    const getUserLegajo = async () => {
+      const userLegajo = await AsyncStorage.getItem('userLegajo');
+      if (userLegajo) {
+        setLegajo(userLegajo);
+      }
+    };
+
+    getUserLegajo();
+  }, []);
+
+
+
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backIconContainer}
@@ -17,7 +34,7 @@ export default function login_screen() {
       <View style={styles.mainContent}>
         <View style={styles.iconContainer}>
           <Ionicons name="person-circle" size={200} color="white" />
-          <Text style={styles.welcomeText}>Bienvenido Inspector</Text>
+          <Text style={styles.welcomeText}>Bienvenido Inspector {legajo}</Text>
         </View>
         <View style={styles.inputContainer}>
           <TouchableOpacity style={styles.createAccountButton}
