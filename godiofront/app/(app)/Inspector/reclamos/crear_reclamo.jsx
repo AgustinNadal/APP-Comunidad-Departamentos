@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente 
 import { router } from "expo-router";
 
 
-
+ 
 export default function crear_reclamo() {
   const [documento, setDocumento] = useState(''); // Se inicializa el estado [documento, setDocumento] con un string vacío
   const [sitio, setSitio] = useState('');

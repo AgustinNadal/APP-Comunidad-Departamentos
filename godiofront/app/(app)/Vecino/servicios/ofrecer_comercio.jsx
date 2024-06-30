@@ -1,16 +1,64 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
 import { router } from "expo-router";
-
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function OfrecerProfesion() {
-  const [titulo, setTitulo] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [categoria, setCategoria] = useState('');
+  const [direccion, setDireccion] = useState('');
+  const [contacto, setContacto] = useState('');
   const [descripcion, setDescripcion] = useState('');
+  const [documento, setDocumento] = useState('');
   const [fotos, setFotos] = useState([]);
+
+  useEffect(() => {
+    const getUserDocumento = async () => {
+      const userDocumento = await AsyncStorage.getItem('userDocumento');
+      if (userDocumento) {
+        setDocumento(userDocumento);
+      }
+    };
+
+    getUserDocumento();
+  }, []);
+
+  const handleCrearServicioComercio = async () => {
+    // Validar campos vacíos
+    if (!direccion || !contacto || !descripcion) {
+      Alert.alert('Error', 'Todos los campos deben estar completos.');
+      return;
+    }
+
+    try {
+      const responseCargarDenuncia = await axios.post(`http://10.0.2.2:8080/inicio/servicio/comercio?direccion=${direccion}&contacto=${contacto}&descripcion=${descripcion}&documento=${documento}`, {
+        direccion: direccion,
+        contacto: contacto,
+        descripcion: descripcion,
+        documento: documento,
+      });
+
+      if (responseCargarDenuncia.status === 200) {
+        // Utiliza router para navegar a la siguiente pantalla
+        router.push("../../../Vecino/inicio/home");
+
+        // Muestra una alerta de éxito
+        Alert.alert('Éxito', 'Se creó con éxito el servicio de comercio.');
+      } else {
+        Alert.alert('Error', 'No se pudo completar la creación del servicio de comercio.');
+      }
+    } catch (error) {
+      if (error.response) {
+        Alert.alert('Error', `El servidor respondió con el estado ${error.response.status}: ${error.response.data}`);
+      } else if (error.request) {
+        Alert.alert('Error', 'No se recibió respuesta del servidor.');
+      } else {
+        Alert.alert('Error', `Error al configurar la solicitud: ${error.message}`);
+      }
+      console.error(error.config);
+    }
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -22,10 +70,6 @@ export default function OfrecerProfesion() {
     if (!result.canceled) {
       setFotos([...fotos, ...result.assets.map(asset => asset.uri)]);
     }
-  };
-
-  const handleEnviar = () => {
-    // Lógica para manejar el envío del formulario
   };
 
   return (
@@ -42,34 +86,27 @@ export default function OfrecerProfesion() {
       <View style={styles.separator} />
 
       <View style={styles.header}>
-        <Text style={styles.headerText}>OFRECER SERVICIO</Text>
+        <Text style={styles.headerText}>OFRECER SERVICIO COMERCIO</Text>
       </View>
+      
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Titulo de servicio"
-          value={titulo}
-          onChangeText={setTitulo}
+          placeholder="Direccion del comercio"
+          value={direccion}
+          onChangeText={setDireccion}
         />
         <TextInput
           style={styles.input}
-          placeholder="Numero de telefono"
-          value={telefono}
-          onChangeText={setTelefono}
-          keyboardType="phone-pad"
+          placeholder="Contacto"
+          value={contacto}
+          onChangeText={setContacto}
         />
         <TextInput
           style={styles.input}
-          placeholder="Categoria"
-          value={categoria}
-          onChangeText={setCategoria}
-        />
-        <TextInput
-          style={[styles.input, styles.textArea]}
           placeholder="Descripcion"
           value={descripcion}
           onChangeText={setDescripcion}
-          multiline
         />
       </View>
       <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
@@ -78,7 +115,8 @@ export default function OfrecerProfesion() {
         </Text>
       </TouchableOpacity>
       <Text style={styles.imagePickerNote}>Máximo: 5 fotos</Text>
-      <TouchableOpacity style={styles.button} onPress={handleEnviar}>
+
+      <TouchableOpacity style={styles.button} onPress={handleCrearServicioComercio}>
         <Text style={styles.buttonText}>ENVIAR</Text>
       </TouchableOpacity>
     </View>
