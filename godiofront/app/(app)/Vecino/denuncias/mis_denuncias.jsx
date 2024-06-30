@@ -1,15 +1,49 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { router } from "expo-router";
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function mis_denuncias() {
+export default function MisDenuncias() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [documento, setDocumento] = useState('');
+
+  useEffect(() => {
+    const getUserDocumento = async () => {
+      const userDocumento = await AsyncStorage.getItem('userDocumento');
+      if (userDocumento) {
+        setDocumento(userDocumento);
+      }
+    };
+ 
+    getUserDocumento();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://10.0.2.2:8080/inicio/denuncia/mis-denuncias?documento=${documento}`);
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+        Alert.alert("Error", "No se pudo cargar la información");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [data]);
+
   return (
     <View style={styles.container}>
 
       <TouchableOpacity style={styles.backIconContainer}
         onPress={() => {
-          router.push("../inicio/denuncia")
+          router.push("../inicio/denuncia");
         }}
       >
         <Icon name="arrow-back" size={30} color="#fff" />
@@ -20,18 +54,20 @@ export default function mis_denuncias() {
       <View style={styles.header}>
         <Text style={styles.headerText}>Mis Denuncias</Text>
       </View>
-      <View style={styles.card}>
-        <Image
-          source={require('../../../../assets/images/denuncia1.png')} // Actualiza la ruta de la imagen según sea necesario
-          style={styles.image}
-        />
-        <Text style={styles.title}>DEJA LA BASURA EN LOS PASILLOS</Text>
-        <Text style={styles.denunciado}>Denunciado: Pedro Ruiz</Text>
-        <Text style={styles.location}>Ubicacion: Cnel. Bogado 2179</Text>
-        <Text style={styles.description}>
-        Una vez por semana mi vecino deja todo el dia la basura en el pasillo.
-        </Text>
-      </View>
+ 
+      
+        <ScrollView style={styles.dataContainer}>
+          {data && data.map((denuncia, index) => (
+            <View key={index} style={styles.card}>
+              <Text style={styles.cardTitle}>Tu DNI:  <Text style={styles.cardText}>{denuncia.documento}</Text></Text>
+              <Text style={styles.cardSubtitle}>Ubicación del incidente: <Text style={styles.cardText}>{denuncia.idsitio}</Text></Text>
+              <Text style={styles.cardDescription}>{denuncia.descripcion}</Text>
+              <Text style={styles.cardTitle}>Documento del denunciado: <Text style={styles.cardText}>{denuncia.documentoDenunciado}</Text></Text>
+            </View>
+          ))}
+        </ScrollView>
+      
+
     </View>
   );
 }
@@ -41,6 +77,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#0091EA',
+  },
+  backIconContainer: {
+    alignSelf: 'flex-start',
+    marginBottom: 10,
   },
   header: {
     backgroundColor: '#29B6F6',
@@ -56,43 +96,50 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
   },
+  dataContainer: {
+    flex: 1,
+    width: '100%',
+  },
+  loadingText: {
+    fontSize: 20,
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 20,
+  },
   card: {
     backgroundColor: '#fff',
     borderRadius: 10,
     padding: 15,
-    alignItems: 'left',
+    marginTop: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  image: {
-    width: '100%',
-    height: 150,
-    borderRadius: 10,
-    marginBottom: 15,
-  },
-  title: {
+  cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#333',
     marginBottom: 5,
   },
-  location: {
+  cardSubtitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#555',
+    marginBottom: 5,
+  },
+  cardText: {
+    fontWeight: 'normal',
+    color: '#333', 
+  },
+  cardDescription: {
     fontSize: 14,
-    color: '#757575',
+    color: '#333',
     marginBottom: 10,
   },
-  description: {
-    fontSize: 14,
-    color: '#000',
-    textAlign: 'left',
-  },
-  denunciado: {
-    fontSize: 14,
-    color: '#000',
-    textAlign: 'left',
-    fontWeight: 'bold',
-    paddingBottom: 10,
-  },
   separator: {
-    marginTop: 20, // Adjust the value as needed to create the desired spacing
+    marginVertical: 10,
   },
-  
 });
+ 

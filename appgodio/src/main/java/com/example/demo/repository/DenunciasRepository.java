@@ -12,4 +12,10 @@ public interface DenunciasRepository extends JpaRepository<Denuncias, Long>{
 
     public List<Denuncias> findByDocumento(String documento);
 
+    public List<Denuncias> findByDocumentodenunciado(String documentodenunciado);
+
+
+
+
 }
+ 

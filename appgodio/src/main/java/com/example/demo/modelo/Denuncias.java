@@ -30,15 +30,19 @@ public class Denuncias {
     @Basic
     private String aceptaresponsabilidad;
 
+    @Basic
+    private String documentodenunciado;
+
     public Denuncias() {}
 
-    public Denuncias(Integer iddenuncias, String documento, String idsitio, String descripcion, String estado, String aceptaresponsabilidad) {
+    public Denuncias(Integer iddenuncias, String documento, String idsitio, String descripcion, String estado, String aceptaresponsabilidad, String documentoDenunciado) {
         this.iddenuncias = iddenuncias;
         this.documento = documento;
         this.idsitio = idsitio;
         this.descripcion = descripcion;
         this.estado = estado;
         this.aceptaresponsabilidad = aceptaresponsabilidad;
+        this.documentodenunciado = documentoDenunciado;
     }
 
     public Integer getIddenuncias() {
@@ -89,11 +93,19 @@ public class Denuncias {
         this.aceptaresponsabilidad = aceptaresponsabilidad;
     }
 
+    public String getDocumentoDenunciado() {
+        return documentodenunciado;
+    }
+
+    public void setDocumentoDenunciado(String documentoDenunciado) {
+        this.documentodenunciado = documentoDenunciado;
+    }
+
     @Override
     public String toString() {
         return "Denuncias [iddenuncias=" + iddenuncias + ", documento=" + documento + ", idsitio=" + idsitio
                 + ", descripcion=" + descripcion + ", estado=" + estado + ", aceptaresponsabilidad="
-                + aceptaresponsabilidad + "]";
+                + aceptaresponsabilidad + " , documentoDenunciado=" + documentodenunciado + "]";
     }
 
 

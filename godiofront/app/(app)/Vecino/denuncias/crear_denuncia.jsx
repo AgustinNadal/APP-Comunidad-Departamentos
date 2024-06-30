@@ -1,17 +1,28 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Alert} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
 import { router } from "expo-router";
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function crear_denuncia() {
-  const [mail, setMail] = useState('');
-  const [titulo, setTitulo] = useState('');
+  const [documento, setDocumento] = useState('');
+  const [sitio, setSitio] = useState('');
   const [descripcion, setDescripcion] = useState('');
-  const [fecha, setFecha] = useState('');
-  const [hora, setHora] = useState('');
-  const [direccion, setDireccion] = useState('');
+  const [documentodenunciado, setDocumentodenunciado] = useState('');
   const [fotos, setFotos] = useState([]);
+
+  useEffect(() => {
+    const getUserDocumento = async () => {
+      const userDocumento = await AsyncStorage.getItem('userDocumento');
+      if (userDocumento) {
+        setDocumento(userDocumento);
+      }
+    };
+
+    getUserDocumento();
+  }, []);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -25,9 +36,32 @@ export default function crear_denuncia() {
     }
   };
 
-  const handleEnviar = () => {
-    // Lógica para manejar el envío del formulario
+  const handleCrearDenuncia = async () => {
+    try {
+      const response = await axios.post(`http://10.0.2.2:8080/inicio/denuncia?documento=${documento}&idsitio=${sitio}&descripcion=${descripcion}&documentodenunciado=${documentodenunciado}`, {
+        documento: documento,
+        sitio: sitio,
+        descripcion: descripcion,
+        documentodenunciado: documentodenunciado,
+        
+      });
 
+      if (response.status === 200) {
+        router.push("../../../Vecino/inicio/home");
+        Alert.alert('Exito', 'Se creo con exito la denuncia.');
+      } else {
+        Alert.alert('Error', 'No se pudo completar la denuncia.');
+      }
+    } catch (error) {
+      if (error.response) {
+        Alert.alert('Error', `El servidor respondió con el estado ${error.response.status}: ${error.response.data}`);
+      } else if (error.request) {
+        Alert.alert('Error', 'No se recibió respuesta del servidor.');
+      } else {
+        Alert.alert('Error', `Error al configurar la solicitud: ${error.message}`);
+      }
+      console.error(error.config);
+    }
   };
 
   return (
@@ -46,30 +80,14 @@ export default function crear_denuncia() {
         <Text style={styles.headerText}>Datos</Text>
       </View>
       <View style={styles.contentContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Tu correo electronico"
-          value={mail}
-          onChangeText={setMail}
-        />
 
         <TextInput
           style={styles.input}
-          placeholder="Nombre"
-          value={titulo}
-          onChangeText={setTitulo}
+          placeholder="Ubicacion del suceso"
+          value={sitio}
+          onChangeText={setSitio}
         />
 
-        <View style={styles.separator} />
-
-        <TextInput
-          style={styles.input}
-          placeholder="Direccion"
-          value={direccion}
-          onChangeText={setDireccion}
-        />
-
-        <View style={styles.separator} />
 
         <TextInput
           style={[styles.input, styles.textArea]}
@@ -79,22 +97,14 @@ export default function crear_denuncia() {
           multiline
         />
 
-        <View style={styles.separator} />
+        <TextInput
+          style={styles.input}
+          placeholder="Documento del denunciado"
+          value={documentodenunciado}
+          onChangeText={setDocumentodenunciado}
+        />
 
-        <View style={styles.row}>
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="Fecha"
-            value={fecha}
-            onChangeText={setFecha}
-          />
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="Hora"
-            value={hora}
-            onChangeText={setHora}
-          />
-        </View>
+  
         <View style={styles.separator} />
           <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
             <Text style={styles.imagePickerText}>
@@ -103,7 +113,7 @@ export default function crear_denuncia() {
           </TouchableOpacity>
 
           <Text style={styles.imagePickerNote}>Máximo: 5 fotos</Text>
-          <TouchableOpacity style={styles.button} onPress={handleEnviar}>
+          <TouchableOpacity style={styles.button} onPress={handleCrearDenuncia}>
             <Text style={styles.buttonText}>ENVIAR</Text>
           </TouchableOpacity>
       </View>
@@ -139,7 +149,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'top',
   },
   input: {
     height: 60,

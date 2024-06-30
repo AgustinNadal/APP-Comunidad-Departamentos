@@ -56,10 +56,12 @@ public class Controlador {
 		}
 	}
 
+
 	@GetMapping("/inspectores")
 	public List<Personal> inspectores() {
 		return personalservice.inspectores();
 	}
+
 
 	@PostMapping("/register")
 	public ResponseEntity<String> register(@RequestParam String documento, @RequestParam String mail) {
@@ -72,6 +74,7 @@ public class Controlador {
 		}
 	}
 
+
 	@PostMapping("/loginVecino")
 	public ResponseEntity<String> loginVecino(@RequestParam String mail, @RequestParam String contrasenia) {
 		String resultado = vecinoservice.login(mail, contrasenia);
@@ -82,15 +85,18 @@ public class Controlador {
 		}
 	}
 
+
 	@GetMapping("/servicios/profesionales")
 	public List<ServicioProfesional> serviciosProfesionales() {
 		return profesionalservice.serviciosProfesionalesHabilitados();
 	}
 
+
 	@GetMapping("/servicios/comercios")
 	public List<ServicioComercio> servicioComercios() {
 		return comercioservice.serviciosComerciosHabilitados();
 	}
+
 
 	@PostMapping("/vecino/olvidecontrasenia")
 	public ResponseEntity<String> olvideContrasenia(@RequestParam String mail) {
@@ -103,11 +109,13 @@ public class Controlador {
 		}
 	}
 
+
 	@GetMapping("/vecino/documento-por-mail")
     public ResponseEntity<String> obtenerDocumentoPorMail(@RequestParam String mail) {
         String documento = vecinoservice.getDocumentoByMail(mail);
         return ResponseEntity.ok(documento);
     }
+
 
 	@PostMapping("/reclamo")
 	public ResponseEntity<String> reclamo(@RequestParam String documento, @RequestParam String idsitio,
@@ -135,8 +143,8 @@ public class Controlador {
 
 	@PostMapping("/denuncia")
 	public ResponseEntity<String> denuncia(@RequestParam String documento, @RequestParam String idsitio,
-			@RequestParam String descripcion) {
-		String resultado = denunciaservice.registrarDenuncia(documento, idsitio, descripcion);
+			@RequestParam String descripcion, @RequestParam String documentodenunciado) {
+		String resultado = denunciaservice.registrarDenuncia(documento, idsitio, descripcion, documentodenunciado);
 		if (resultado.equals("Denuncia registrada")) {
 			return ResponseEntity.ok(resultado);
 		} else {
@@ -149,4 +157,11 @@ public class Controlador {
 	public List<Denuncias> misDenuncias(@RequestParam String documento) {
 		return (List<Denuncias>) denunciaservice.listarDenunciasPorDocumento(documento);
 	}
+	
+
+	@GetMapping("/denuncia/buscar-documento-denunciado")
+	public List<Denuncias> buscarDocumentoDenunciado(@RequestParam String documentodenunciado) {
+		return (List<Denuncias>) denunciaservice.buscarPorDocumentoDenunciado(documentodenunciado);
+	}
+	
 }

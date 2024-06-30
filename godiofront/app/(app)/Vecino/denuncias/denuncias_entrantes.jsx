@@ -1,11 +1,47 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Alert, Dimensions, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { router } from "expo-router";
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const windowWidth = Dimensions.get('window').width;
 
-export default function denuncias_entrantes() {
+export default function DenunciasEntrantes() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [documento, setDocumento] = useState('');
+  const [documentodenunciado, setDocumentodenunciado] = useState('');
+
+
+  useEffect(() => {
+    const getUserDocumento = async () => {
+      const userDocumento = await AsyncStorage.getItem('userDocumento');
+      if (userDocumento) {
+        setDocumento(userDocumento);
+      }
+    };
+  
+    getUserDocumento();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://10.0.2.2:8080/inicio/denuncia/buscar-documento-denunciado?documentodenunciado=${documento}`);
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+        Alert.alert("Error", "No se pudo cargar la información");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [data]);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backIconContainer}
@@ -19,23 +55,23 @@ export default function denuncias_entrantes() {
       <View style={styles.separator} />
 
       <View style={styles.header}>
-        <Text style={styles.headerText}>Denuncias entrantes</Text>
+        <Text style={styles.headerText}>Denuncias Entrantes</Text>
       </View>
 
-      <View style={styles.card}>
-        <Image 
-          source={require('../../../../assets/images/denuncia2.png')} // Replace with actual image URL
-          style={styles.image}
-          resizeMode="contain" // Ensure the image adjusts its size to fit the container
-        />
-        <Text style={styles.title}>RUIDOS MOLESTOS</Text>
-        <Text style={styles.text}><Text style={styles.boldText}>Denunciado:</Text> Tú</Text>
-        <Text style={styles.text}>
-          <Text style={styles.iconText}></Text>Ceibos 2179
-        </Text>
-        <Text style={styles.boldText}>Descripción</Text>
-        <Text style={styles.text}>No deja de hacer ruido a altas horas de la noche</Text>
-      </View>
+      {loading ? (
+        <Text style={styles.loadingText}>Cargando...</Text>
+      ) : (
+        <ScrollView style={styles.dataContainer}>
+          {data && data.map((denuncia, index) => (
+            <View key={index} style={styles.card}>
+              <Text style={styles.cardTitle}>DNI del denunciante: <Text style={styles.cardText}>{denuncia.documento}</Text></Text>
+              <Text style={styles.cardSubtitle}>Ubicación del incidente: <Text style={styles.cardText}>{denuncia.idsitio}</Text></Text>
+              <Text style={styles.cardDescription}>{denuncia.descripcion}</Text>
+              <Text style={styles.cardTitle}>Tu documento: <Text style={styles.cardText}>{denuncia.documentoDenunciado}</Text></Text>
+            </View>
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 }
@@ -45,6 +81,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#0091EA',
+  },
+  backIconContainer: {
+    alignSelf: 'flex-start',
+    marginBottom: 10,
   },
   header: {
     backgroundColor: '#29B6F6',
@@ -60,41 +100,49 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
   },
+  dataContainer: {
+    flex: 1,
+    width: '100%',
+  },
+  loadingText: {
+    fontSize: 20,
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 20,
+  },
   card: {
     backgroundColor: '#fff',
-    borderRadius: 20,
-    padding: 20,
-    alignItems: 'left',
+    borderRadius: 10,
+    padding: 15,
+    marginTop: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  image: {
-    width: windowWidth * 0.8, // Use 90% of the screen width for the image
-    height: undefined, // Height will be calculated automatically to maintain aspect ratio
-    aspectRatio: 4 / 2, // Change the aspect ratio as needed
-    borderRadius: 30,
-    marginBottom: 15,
-    marginRight: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 16,
-    marginBottom: 10,
-    textAlign: 'left',
-  },
-  boldText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
-    alignItems: 'left',
-  },
-  iconText: {
+  cardTitle: {
     fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 5,
+  },
+  cardSubtitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#555',
+    marginBottom: 5,
+  },
+  cardText: {
+    fontWeight: 'normal',
+    color: '#333',
+  },
+  cardDescription: {
+    fontSize: 14,
+    color: '#333',
+    marginBottom: 10,
   },
   separator: {
-    marginTop: 20, // Adjust the value as needed to create the desired spacing
+    marginVertical: 10,
   },
 });

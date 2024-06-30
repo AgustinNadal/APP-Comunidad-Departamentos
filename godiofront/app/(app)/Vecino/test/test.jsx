@@ -1,29 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import axios from "axios";
 
 export default function InfoScreen() {
-  const [data, setData] = useState(null);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch('http://10.0.2.2:8080/inicio/inspectores');
-      const result = await response.json();
-      setData(result);
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    }
-  };
+  const [user, setUser] = useState({});
+
+  const fetchData = () => {
+    return axios.get(`http://10.0.2.2:8080/inicio/denuncia?documento=DNI28000075`)
+    .then((response) => setUser(response.data))
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={fetchData}>
-        <Text style={styles.buttonText}>Traer Información</Text>
-      </TouchableOpacity>
-      {data && (
-        <ScrollView style={styles.dataContainer}>
-          <Text style={styles.dataText}>{JSON.stringify(data, null, 2)}</Text>
-        </ScrollView>
-      )}
+      
     </View>
   );
 }

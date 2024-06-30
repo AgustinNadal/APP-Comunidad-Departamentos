@@ -14,7 +14,7 @@ public class AppgodioApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		// Aca podemos hacer prints
-		System.out.println("Sistema Bakcend Iniciado!");
+		System.out.println("------------------------------------Sistema Bakcend Iniciado!-----------------------------------------");
 		
 	}
 

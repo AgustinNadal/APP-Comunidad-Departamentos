@@ -14,9 +14,9 @@ public class DenunciasService {
     @Autowired
     DenunciasRepository repositorio;
 
-    public String registrarDenuncia(String documento, String idsitio, String descripcion) {
+    public String registrarDenuncia(String documento, String idsitio, String descripcion, String documentodenunciado) {
         // Creación de una nueva denuncia con estado "P" y sin ID de denuncia
-        Denuncias nuevaDenuncia = new Denuncias(null, documento, idsitio, descripcion, "P", "A");
+        Denuncias nuevaDenuncia = new Denuncias(null, documento, idsitio, descripcion, "P", "A", documentodenunciado);
         
         // Guardar la nueva denuncia en el repositorio
         repositorio.save(nuevaDenuncia);
@@ -24,9 +24,15 @@ public class DenunciasService {
         return "Denuncia registrada";
     }
 
+    
     public List<Denuncias> listarDenunciasPorDocumento(String documento) {
         // Obtener todas las denuncias por documento del repositorio
         return repositorio.findByDocumento(documento);
+    }
+
+
+    public List<Denuncias> buscarPorDocumentoDenunciado(String documentodenunciado) {
+        return repositorio.findByDocumentodenunciado(documentodenunciado);
     }
 
 

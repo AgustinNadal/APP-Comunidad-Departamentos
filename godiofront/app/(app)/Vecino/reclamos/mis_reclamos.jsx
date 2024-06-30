@@ -1,14 +1,48 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
-import { router } from "expo-router"
+import { router } from "expo-router";
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function mis_reclamos() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [documento, setDocumento] = useState(''); 
+
+  useEffect(() => {
+    const getUserDocumento = async () => {
+      const userDocumento = await AsyncStorage.getItem('userDocumento');
+      if (userDocumento) {
+        setDocumento(userDocumento);
+      }
+    };
+
+    getUserDocumento();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://10.0.2.2:8080/inicio/reclamo/mis-reclamos?documento=${documento}`);
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+        Alert.alert("Error", "No se pudo cargar la información");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [documento]);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backIconContainer}
         onPress={() => {
-          router.push("../inicio/reclamo")
+          router.push("../inicio/reclamo");
         }}
       >
         <Icon name="arrow-back" size={30} color="#fff" />
@@ -17,19 +51,23 @@ export default function mis_reclamos() {
       <View style={styles.separator} />
 
       <View style={styles.header}>
-        <Text style={styles.headerText}>Mis reclamos</Text>
+        <Text style={styles.headerText}>Mis Reclamos</Text>
       </View>
-      <View style={styles.card}>
-        <Image
-          source={require('../../../../assets/images/reclamo1.png')} // Actualiza la ruta de la imagen según sea necesario
-          style={styles.image}
-        />
-        <Text style={styles.title}>TUBERIAS ROTAS EN LA PLAZA</Text>
-        <Text style={styles.location}>Cnel. Bogado 2179</Text>
-        <Text style={styles.description}>
-          Desde hace unas horas, noté un flujo inusual de agua. El agua se está acumulando rápidamente, causando daños a la propiedad y representando un riesgo para la seguridad.
-        </Text>
-      </View>
+
+      {loading ? (
+        <ActivityIndicator size="large" color="#fff" />
+      ) : (
+        <ScrollView style={styles.dataContainer}>
+          {data && data.map((denuncia, index) => (
+            <View key={index} style={styles.card}>
+              <Text style={styles.cardTitle}>Tu DNI: <Text style={styles.cardText}>{denuncia.documento}</Text></Text>
+              <Text style={styles.cardSubtitle}>Ubicación del problema: <Text style={styles.cardText}>{denuncia.idsitio}</Text></Text>
+              <Text style={styles.cardSubtitle}>Desperfecto: <Text style={styles.cardText}>{denuncia.iddesperfecto}</Text></Text>
+              <Text style={styles.cardDescription}>Descripción del problema: {denuncia.descripcion}</Text>
+            </View>
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 }
@@ -40,9 +78,13 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#0091EA',
   },
+  backIconContainer: {
+    alignSelf: 'flex-start',
+    marginBottom: 10,
+  },
   header: {
     backgroundColor: '#29B6F6',
-    padding: 10,
+    padding: 15,
     borderRadius: 10,
     marginBottom: 20,
     justifyContent: 'center',
@@ -54,35 +96,50 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
   },
+  dataContainer: {
+    flex: 1,
+    width: '100%',
+  },
   card: {
     backgroundColor: '#fff',
     borderRadius: 10,
-    padding: 15,
-    alignItems: 'left',
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  image: {
-    width: '100%',
-    height: 150,
-    borderRadius: 10,
-    marginBottom: 15,
-  },
-  title: {
+  cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#333',
     marginBottom: 5,
   },
-  location: {
+  cardSubtitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#555',
+    marginBottom: 5,
+  },
+  cardText: {
+    fontWeight: 'normal',
+    color: '#333', 
+  },
+  cardDescription: {
     fontSize: 14,
-    color: '#757575',
+    color: '#333',
     marginBottom: 10,
   },
-  description: {
-    fontSize: 14,
-    color: '#000',
-    textAlign: 'left',
-  },
   separator: {
-    marginTop: 20, // Adjust the value as needed to create the desired spacing
+    marginVertical: 10,
+  },
+  loadingText: {
+    fontSize: 20,
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
+
