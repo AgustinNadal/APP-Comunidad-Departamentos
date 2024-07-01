@@ -1,32 +1,44 @@
-import React, { useState }from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { router } from "expo-router";
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Ionicons'; // Importa el componente Icon
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function recuperar_password() {
   
   const [legajo, setLegajo] = useState('');
-  const [passwordActual, setPasswordActual] = useState('');
-  const [passwordNueva, setPasswordNueva] = useState('');
-  const [passwordNueva2, setPasswordNueva2] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmarPassword, setConfirmarPassword] = useState('');
+
+  useEffect(() => {
+    const getUserLegajo = async () => {
+      const userLegajo = await AsyncStorage.getItem('userLegajo');
+      if (userLegajo) {
+        setLegajo(userLegajo);
+      }
+    };
+
+    getUserLegajo();
+  }, []);
 
   const handleCambiarInspectorPassword = async () => {
-    try {
-      const response = await axios.post(`http://10.0.2.2:8080/inicio/cambiarPassword?legajo=${legajo}&passwordActual=${passwordActual}&passwordNueva=${passwordNueva}&passwordNueva2=${passwordNueva2}`, {
-        legajo: legajo,
-        passwordActual: passwordActual,
-        passwordNueva: passwordNueva,
-        passwordNueva2: passwordNueva2,
+    if (password !== confirmarPassword) {
+      Alert.alert('Error', 'Las contraseñas no coinciden');
+      return;
+    }
 
+    try {
+      const response = await axios.put(`http://10.0.2.2:8080/inicio/inspectores/cambiarcontrasenia?legajo=${legajo}&password=${password}`, {
+        legajo: legajo,
+        password: password,
       });
- 
+
       if (response.status === 200) {
         router.push("../../../Publico/inicio/home");
-        Alert.alert('Exito', 'Se envio un mail a su direccion.');
+        Alert.alert('Éxito', 'Se cambio su contrasenia.');
       } else {
-        Alert.alert('Error', 'No se pudo enviar el mail.');
+        Alert.alert('Error', 'No se pudo cambiar su contrasenia.');
       }
     } catch (error) {
       if (error.response) {
@@ -53,38 +65,22 @@ export default function recuperar_password() {
         <Text style={styles.title}>CAMBIAR CONTRASEÑA</Text>
         <TextInput
           style={styles.input}
-          placeholder="Legajo"
+          placeholder="Contraseña Nueva"
           autoCapitalize="none"
           autoCorrect={false}
-          value={legajo}
-          onChangeText={setLegajo}
+          secureTextEntry={true}
+          value={password}
+          onChangeText={setPassword}
         />
 
         <TextInput
           style={styles.input}
-          placeholder="Contrasenia actual"
+          placeholder="Confirmar Contraseña Nueva"
           autoCapitalize="none"
           autoCorrect={false}
-          value={passwordActual}
-          onChangeText={setPasswordActual}
-        />
-
-        <TextInput
-          style={styles.input}
-          placeholder="Contraseña nueva"
-          autoCapitalize="none"
-          autoCorrect={false}
-          value={passwordNueva}
-          onChangeText={setPasswordNueva}
-        />
-
-        <TextInput
-          style={styles.input}
-          placeholder="Repite contraseña nueva"
-          autoCapitalize="none"
-          autoCorrect={false}
-          value={passwordNueva2}
-          onChangeText={setPasswordNueva2}
+          secureTextEntry={true}
+          value={confirmarPassword}
+          onChangeText={setConfirmarPassword}
         />
 
         <TouchableOpacity style={styles.button}

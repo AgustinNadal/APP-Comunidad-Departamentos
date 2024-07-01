@@ -42,5 +42,17 @@ public class PersonalService {
         }
     }
 
+	public String cambiarContrasenia (Integer legajo, String password) {
+		Optional<Personal> optionalPersonal = repositorio.findById(legajo);
+		if (optionalPersonal.isPresent()) {
+			Personal personal = optionalPersonal.get();
+			personal.setPassword(password);
+			repositorio.save(personal);
+			return "Contraseña cambiada";
+		} else {
+			return "No se encontró el inspector";
+		}
+	}
+
 }
  

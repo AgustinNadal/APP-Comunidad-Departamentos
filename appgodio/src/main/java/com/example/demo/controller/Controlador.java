@@ -75,6 +75,17 @@ public class Controlador {
 		return ResponseEntity.ok(documento);
 	}
 
+	
+	@PutMapping("/inspectores/cambiarcontrasenia")
+	public ResponseEntity<String> cambiarContrasenia(@RequestParam Integer legajo, @RequestParam String password) {
+		String resultado = personalservice.cambiarContrasenia(legajo, password);
+		if (resultado.equals("Contraseña cambiada")) {
+			return ResponseEntity.ok(resultado);
+		} else {
+			return ResponseEntity.status(400).body(resultado);
+		}
+	}
+
 
 	@PostMapping("/register")
 	public ResponseEntity<String> register(@RequestParam String documento, @RequestParam String mail) {
@@ -99,7 +110,6 @@ public class Controlador {
 	}
 
 
-
 	@PostMapping("/vecino/olvidecontrasenia")
 	public ResponseEntity<String> olvideContrasenia(@RequestParam String mail) {
 		String resultado = vecinoservice.olvideContrasenia(mail);
@@ -110,6 +120,7 @@ public class Controlador {
 			return ResponseEntity.status(400).body(resultado);
 		}
 	}
+
 
 	@PutMapping("/vecino/cambiarcontrasenia")
 	public ResponseEntity<String> cambiarContrasenia(@RequestParam String documento, @RequestParam String contrasenia) {

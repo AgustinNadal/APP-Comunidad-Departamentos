@@ -88,13 +88,6 @@ export default function login_inspector() {
               <Ionicons name={passwordVisible ? "eye" : "eye-off"} size={20} color="gray" />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              router.push("./cambiar_password_inspector")
-            }}
-          >
-            <Text style={styles.forgotPassword}>¿Desea cambiar su contraseña?</Text>
-          </TouchableOpacity>
 
           <TouchableOpacity style={styles.button}
             onPress={handleRegister}
