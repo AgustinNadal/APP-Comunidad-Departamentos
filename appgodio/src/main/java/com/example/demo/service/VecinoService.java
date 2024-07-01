@@ -60,7 +60,7 @@ public class VecinoService {
 		if (vecino == null) {
 			return "No estas registrado";
 		} else {
-			emailservice.sendEmail("agustinjnadal@gmail.com", "Olvide mi contrasenia", "Contrasenia Olvidada: " + vecino.getContrasenia());
+			emailservice.sendEmail("agustinjnadal@gmail.com", "Olvide mi contrasenia", "Hola vecino, aqui esta su contrasenia, acuerdese de cambiarla cuando pueda por una que recuerde o anotela en un lugar fisico. Contrasenia Olvidada: " + vecino.getContrasenia());
 			return "Correo enviado correctamente";
 		}
 	}
