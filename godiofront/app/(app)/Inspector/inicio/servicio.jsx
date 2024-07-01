@@ -1,107 +1,133 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Modal, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Modal, ActivityIndicator, Alert, TextInput } from 'react-native';
 import { router } from "expo-router";
-
-const services = [
-  {
-    id: '1',
-    contact: '1167539799',
-    title: 'Fontanero Manolo',
-    description: 'Nuestro equipo de fontaneros expertos está disponible para atender todas sus necesidades de fontanería, ofreciendo un servicio confiable y de alta calidad',
-    image: require('../../../../assets/images/fontanero.png'),
-    category: 'Fontanería' // Nueva propiedad para la categoría
-  },
-  {
-    id: '2',
-    contact: '1167357330',
-    title: 'Electricista Pedro',
-    description: 'Nuestro equipo de electricistas certificados está listo para ofrecerle soluciones eléctricas confiables y seguras.',
-    image: require('../../../../assets/images/electricista.png'),
-    category: 'Electricidad' // Nueva propiedad para la categoría
-  },
-  {
-    id: '3',
-    contact: '1167539799',
-    title: 'Carpintero Gustavo',
-    description: 'Nuestro equipo de carpinteros expertos está disponible para atender todas sus necesidades de carpintería, ofreciendo un servicio confiable y de alta calidad',
-    image: require('../../../../assets/images/carpintero.png'),
-    category: 'Carpintería' // Nueva propiedad para la categoría
-  },
-  {
-    id: '4',
-    contact: '1167357330',
-    title: 'Cerrajero Juan',
-    description: 'Nuestro equipo de cerrajeros certificados está listo para ofrecerle soluciones de cerrajería confiables y seguras.',
-    image: require('../../../../assets/images/cerrajero.png'),
-    category: 'Cerrajería' // Nueva propiedad para la categoría
-  }
-  // Agrega más servicios según sea necesario
-];
+import axios from 'axios';
 
 export default function servicio() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const categories = ["Fontanería", "Electricidad", "Carpintería", "Cerrajería", "Pintura"]; // Lista de categorías
+  const [selectedService, setSelectedService] = useState(null);
+  const [professionalServices, setProfessionalServices] = useState([]);
+  const [commercialServices, setCommercialServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredServices = selectedCategory
-    ? services.filter(service => service.category === selectedCategory) // Filtrar por categoría en lugar de título
-    : services;
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const [professionalResponse, commercialResponse] = await Promise.all([
+          axios.get('http://10.0.2.2:8080/inicio/servicio/profesional/todos-servicios'),
+          axios.get('http://10.0.2.2:8080/inicio/servicio/comercio/todos-servicios')
+        ]);
+        setProfessionalServices(professionalResponse.data);
+        setCommercialServices(commercialResponse.data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+        Alert.alert("Error", "No se pudo cargar la información");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  const renderProfessionalServiceModal = () => (
+    <View style={styles.modalContainer}>
+      <Text style={styles.modalHeader}>{selectedService.nombre + " " +  selectedService.apellido}</Text>
+      <Text>{selectedService.contacto}</Text>
+      <Text>{selectedService.horario}</Text>
+      <Text>{selectedService.descripcion}</Text>
+      <TouchableOpacity
+        style={styles.closeButton}
+        onPress={() => setModalVisible(false)}
+      >
+        <Text style={styles.closeButtonText}>Cerrar</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const renderCommercialServiceModal = () => (
+    <View style={styles.modalContainer}>
+      <Text style={styles.modalHeader}>{selectedService.nombrecomercio}</Text>
+      <Text>{selectedService.direccion}</Text>
+      <Text>{selectedService.contacto}</Text>
+      <Text>{selectedService.descripcion}</Text>
+      <TouchableOpacity
+        style={styles.closeButton}
+        onPress={() => setModalVisible(false)}
+      >
+        <Text style={styles.closeButtonText}>Cerrar</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const filteredProfessionalServices = professionalServices.filter(service =>
+    service.rubro.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredCommercialServices = commercialServices.filter(service =>
+    service.nombrecomercio.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Contratar servicios</Text>
       </View>
-      <View style={styles.buttonGroup}>
-        <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
-          <Text style={styles.buttonText}>Categoria</Text>
-        </TouchableOpacity>
+
+
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Buscar por rubro"
+          value={searchTerm}
+          onChangeText={(text) => setSearchTerm(text)}
+        />
       </View>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalHeader}>Seleccione una categoría</Text>
-            <FlatList
-              data={categories}
-              renderItem={({ item }) => (
-                <TouchableOpacity 
-                  style={styles.categoryItem}
-                  onPress={() => {
-                    setSelectedCategory(item);
-                    setModalVisible(false);
-                  }}
-                >
-                  <Text style={styles.categoryText}>{item}</Text>
-                </TouchableOpacity>
-              )}
-              keyExtractor={(item) => item}
-            />
-            <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
-              <Text style={styles.closeButtonText}>Cerrar</Text>
-            </TouchableOpacity>
+      {loading ? (
+        <ActivityIndicator size="large" color="#29B6F6" />
+      ) : (
+        <>
+          <Text style={styles.sectionHeader}>Servicios Profesionales</Text>
+          {filteredProfessionalServices.map((service, index) => (
+            <View key={index} style={styles.card}>
+              <Text style={styles.titleText}>{service.rubro}</Text>
+              <Text style={styles.descriptionText}>{service.descripcion}</Text>
+              <TouchableOpacity style={styles.moreButton} onPress={() => {
+                setSelectedService(service);
+                setModalVisible(true);
+              }}>
+                <Text style={styles.moreButtonText}>Más información</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+          <Text style={styles.sectionHeader}>Servicios de Comercios</Text>
+          {filteredCommercialServices.map((service, index) => (
+            <View key={index} style={styles.card}>
+              <Text style={styles.titleText}>{service.nombrecomercio}</Text>
+              <Text style={styles.descriptionText}>{service.descripcion}</Text>
+              <TouchableOpacity style={styles.moreButton} onPress={() => {
+                setSelectedService(service);
+                setModalVisible(true);
+              }}>
+                <Text style={styles.moreButtonText}>Más información</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </>
+      )}
+      {modalVisible && selectedService && (
+        <Modal
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            {professionalServices.includes(selectedService) ? renderProfessionalServiceModal() : renderCommercialServiceModal()}
           </View>
-        </View>
-      </Modal>
-
-      {filteredServices.map(service => (
-        <View key={service.id} style={styles.card}>
-          <Text style={styles.contactText}>Contacto: {service.contact}</Text>
-          <Text style={styles.titleText}>{service.title}</Text>
-          <Text style={styles.descriptionText}>{service.description}</Text>
-          <Image source={service.image} style={styles.image} />
-          <TouchableOpacity style={styles.moreButton}
-            onPress={() => router.push("../servicios/x_servicio")}
-          >
-            <Text style={styles.moreButtonText}>Ver más</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
+        </Modal>
+      )}
     </ScrollView>
   );
 }
@@ -138,17 +164,35 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  searchContainer: {
+    marginHorizontal: 16,
+    marginVertical: 10,
+  },
+  searchInput: {
+    height: 40,
+    borderColor: '#29B6F6',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    backgroundColor: '#FFFFFF',
+  },
+  sectionHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 10,
+    marginHorizontal: 16,
+  },
   card: {
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
     padding: 16,
     margin: 16,
     alignItems: 'center',
-  },
-  contactText: {
-    fontSize: 14,
-    color: '#757575',
-    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   titleText: {
     fontSize: 18,
@@ -160,12 +204,6 @@ const styles = StyleSheet.create({
     color: '#757575',
     textAlign: 'center',
     marginBottom: 8,
-  },
-  image: {
-    width: '100%',
-    height: 150,
-    marginBottom: 8,
-    borderRadius: 8,
   },
   moreButton: {
     backgroundColor: '#29B6F6',
@@ -194,17 +232,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 16,
-  },
-  categoryItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#DDD',
-    width: '100%',
-    alignItems: 'center',
-  },
-  categoryText: {
-    fontSize: 16,
-    color: '#333',
   },
   closeButton: {
     backgroundColor: '#29B6F6',

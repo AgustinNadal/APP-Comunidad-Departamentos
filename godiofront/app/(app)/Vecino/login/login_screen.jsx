@@ -31,7 +31,10 @@ export default function home_screen() {
       <View style={styles.mainContent}>
         <View style={styles.iconContainer}>
           <Ionicons name="person-circle" size={200} color="white" />
-          <Text style={styles.welcomeText}>             Bienvenido              {mail}</Text>
+        </View>
+        <View style={styles.welcomeContainer}>
+          <Text style={styles.welcomeText}>Bienvenido</Text>
+          <Text style={styles.mailText}>{mail}</Text>
         </View>
         <View style={styles.inputContainer}>
           <TouchableOpacity style={styles.createAccountButton}
@@ -52,8 +55,6 @@ export default function home_screen() {
           >
             <Text style={styles.buttonText}>Cambiar Contrasenia</Text>
           </TouchableOpacity>
-
-
         </View>
       </View>
     </View>
@@ -80,11 +81,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 20,
   },
+  welcomeContainer: {
+    alignItems: "center",
+    marginVertical: 20,
+  },
   welcomeText: {
     color: "white",
     fontSize: 24,
     fontWeight: "bold",
-    marginTop: 10,
+  },
+  mailText: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 5,
   },
   inputContainer: {
     width: "100%",
