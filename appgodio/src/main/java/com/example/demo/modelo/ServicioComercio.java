@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "servicioscomercios")
 public class ServicioComercio {
-
+ 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idserviciocomercio;
@@ -30,15 +30,19 @@ public class ServicioComercio {
     @Basic
     private String estado;
 
+    @Basic
+    private String nombrecomercio;
+
     public ServicioComercio() {}
 
-    public ServicioComercio(Integer idserviciocomercio, String direccion, String contacto, String descripcion, String documento, String estado) {
+    public ServicioComercio(Integer idserviciocomercio, String direccion, String contacto, String descripcion, String documento, String estado, String nombrecomercio) {
         this.idserviciocomercio = idserviciocomercio;
         this.direccion = direccion;
         this.contacto = contacto;
         this.descripcion = descripcion;
         this.documento = documento;
         this.estado = estado;
+        this.nombrecomercio = nombrecomercio;
     }
 
     public Integer getIdserviciocomercio() {
@@ -87,6 +91,14 @@ public class ServicioComercio {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getNombrecomercio() {
+        return nombrecomercio;
+    }
+
+    public void setNombrecomercio(String nombrecomercio) {
+        this.nombrecomercio = nombrecomercio;
     }
 
 }

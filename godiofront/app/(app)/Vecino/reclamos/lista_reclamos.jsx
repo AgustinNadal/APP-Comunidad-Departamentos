@@ -47,7 +47,10 @@ export default function lista_reclamos() {
         <ScrollView style={styles.dataContainer}>
           {data && data.map((denuncia, index) => (
             <View key={index} style={styles.card}>
-              <Text style={styles.cardTitle}>DNI: <Text style={styles.cardText}>{denuncia.documento}</Text></Text>
+              <Text style={styles.cardTitle}>
+                {denuncia.documento ? "DNI: " : "Legajo: "}
+                <Text style={styles.cardText}>{denuncia.documento ? denuncia.documento : denuncia.legajo}</Text>
+              </Text>
               <Text style={styles.cardSubtitle}>Ubicación del problema: <Text style={styles.cardText}>{denuncia.idsitio}</Text></Text>
               <Text style={styles.cardSubtitle}>Desperfecto: <Text style={styles.cardText}>{denuncia.iddesperfecto}</Text></Text>
               <Text style={styles.cardDescription}>Descripción del problema: {denuncia.descripcion}</Text>

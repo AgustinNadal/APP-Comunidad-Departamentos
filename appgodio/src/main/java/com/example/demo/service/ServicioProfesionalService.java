@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,11 @@ public class ServicioProfesionalService {
         repositorio.save(nuevoServicioProfesional);
         
         return "Servicio profesional registrado";
+    }
+
+    public List<ServicioProfesional> listarTodosServicioProfesional() {
+        // Obtener todos los servicios profesionales del repositorio
+        return repositorio.findAll();
     }
 
 }

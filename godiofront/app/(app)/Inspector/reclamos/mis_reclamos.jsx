@@ -63,7 +63,7 @@ export default function mis_reclamos() {
         <ScrollView style={styles.dataContainer}>
           {data && data.map((reclamo, index) => (
             <View key={index} style={styles.card}>
-              <Text style={styles.cardTitle}>Tu DNI: <Text style={styles.cardText}>{reclamo.documento}</Text></Text>
+              <Text style={styles.cardTitle}>Tu Legajo: <Text style={styles.cardText}>{reclamo.legajo}</Text></Text>
               <Text style={styles.cardSubtitle}>Ubicación del problema: <Text style={styles.cardText}>{reclamo.idsitio}</Text></Text>
               <Text style={styles.cardSubtitle}>Desperfecto: <Text style={styles.cardText}>{reclamo.iddesperfecto}</Text></Text>
               <Text style={styles.cardDescription}>Descripción del problema: {reclamo.descripcion}</Text>

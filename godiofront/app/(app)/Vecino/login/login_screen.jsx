@@ -44,6 +44,16 @@ export default function home_screen() {
           >
             <Text style={styles.buttonText}>Cerrar Sesion</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.createAccountButton}
+            onPress={async () => {
+              router.push("../../../Publico/login/cambiar_password");
+            }}
+          >
+            <Text style={styles.buttonText}>Cambiar Contrasenia</Text>
+          </TouchableOpacity>
+
+
         </View>
       </View>
     </View>

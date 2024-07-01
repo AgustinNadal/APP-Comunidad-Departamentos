@@ -11,6 +11,7 @@ export default function OfrecerProfesion() {
   const [contacto, setContacto] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [documento, setDocumento] = useState('');
+  const [nombrecomercio, setNombreComercio] = useState('');
   const [fotos, setFotos] = useState([]);
 
   useEffect(() => {
@@ -32,11 +33,12 @@ export default function OfrecerProfesion() {
     }
 
     try {
-      const responseCargarDenuncia = await axios.post(`http://10.0.2.2:8080/inicio/servicio/comercio?direccion=${direccion}&contacto=${contacto}&descripcion=${descripcion}&documento=${documento}`, {
+      const responseCargarDenuncia = await axios.post(`http://10.0.2.2:8080/inicio/servicio/comercio?direccion=${direccion}&contacto=${contacto}&descripcion=${descripcion}&documento=${documento}&nombrecomercio=${nombrecomercio}`, {
         direccion: direccion,
         contacto: contacto,
         descripcion: descripcion,
         documento: documento,
+        nombrecomercio: nombrecomercio,
       });
 
       if (responseCargarDenuncia.status === 200) {
@@ -92,6 +94,12 @@ export default function OfrecerProfesion() {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
+          placeholder="Nombre del comercio"
+          value={nombrecomercio}
+          onChangeText={setNombreComercio}
+        />
+        <TextInput
+          style={styles.input}
           placeholder="Direccion del comercio"
           value={direccion}
           onChangeText={setDireccion}
@@ -108,6 +116,7 @@ export default function OfrecerProfesion() {
           value={descripcion}
           onChangeText={setDescripcion}
         />
+        
       </View>
       <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
         <Text style={styles.imagePickerText}>

@@ -9,3 +9,4 @@ import com.example.demo.modelo.ServicioComercio;
 public interface ServicioComercioRepository extends JpaRepository<ServicioComercio, Integer>{
 
 }
+ 

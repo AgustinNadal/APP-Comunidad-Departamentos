@@ -79,12 +79,12 @@ export default function crear_reclamo() {
       await storeReclamoLocally(reclamo);
       return;
     }
-  
+   
     try {
       const response = await axios.post(`http://10.0.2.2:8080/inicio/reclamo/personal`, reclamo);
   
       if (response.status === 200 || reclamo.status === 200) {
-        router.push("../../../Inspesctor/inicio/home");
+        router.push("../../../Inspector/inicio/home");
         Alert.alert('Exito', 'Se creo con exito el reclamo.');
       } else {
         Alert.alert('Error', 'No se pudo completar el registro del reclamo.');

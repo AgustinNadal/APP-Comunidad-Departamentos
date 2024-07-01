@@ -20,6 +20,7 @@ import com.example.demo.modelo.Reclamos;
 import com.example.demo.service.DenunciasService;
 import com.example.demo.service.ServicioComercioService;
 import com.example.demo.service.ServicioProfesionalService;
+import com.example.demo.service.VecinoRegistradoService;
 import com.example.demo.service.PersonalService;
 import com.example.demo.service.ReclamoService;
 import com.example.demo.service.VecinoService;
@@ -47,6 +48,9 @@ public class Controlador {
 
 	@Autowired
 	ServicioProfesionalService servicioprofesionalservice;
+
+	@Autowired
+	VecinoRegistradoService vecinoregistradoservice;
 
 	@PostMapping("/loginInspector")
 	public ResponseEntity<String> loginInspector(@RequestParam Integer legajo, @RequestParam String password) {
@@ -101,6 +105,16 @@ public class Controlador {
 		String resultado = vecinoservice.olvideContrasenia(mail);
 		if (resultado.equals("Correo enviado correctamente")) {
 			
+			return ResponseEntity.ok(resultado);
+		} else {
+			return ResponseEntity.status(400).body(resultado);
+		}
+	}
+
+	@PutMapping("/vecino/cambiarcontrasenia")
+	public ResponseEntity<String> cambiarContrasenia(@RequestParam String documento, @RequestParam String contrasenia) {
+		String resultado = vecinoregistradoservice.cambiarContrasenia(documento, contrasenia);
+		if (resultado.equals("Contrasenia cambiada")) {
 			return ResponseEntity.ok(resultado);
 		} else {
 			return ResponseEntity.status(400).body(resultado);
@@ -210,13 +224,18 @@ public class Controlador {
 
 	@PostMapping("/servicio/comercio")
 	public ResponseEntity<String> servicioComercio(@RequestParam String direccion, @RequestParam String contacto,
-			@RequestParam String descripcion, @RequestParam String documento) {
-		String resultado = serviciocomercioservice.registrarServicioComercio(direccion, contacto, descripcion, documento);
+			@RequestParam String descripcion, @RequestParam String documento, @RequestParam String nombrecomercio) {
+		String resultado = serviciocomercioservice.registrarServicioComercio(direccion, contacto, descripcion, documento, nombrecomercio);
 		if (resultado.equals("Servicio de comercio registrado")) {
 			return ResponseEntity.ok(resultado);
 		} else {
 			return ResponseEntity.status(400).body(resultado);
 		}
+	}
+
+	@GetMapping("/servicio/comercio/todos-servicios")
+	public List<ServicioComercio> todosServiciosComercio() {
+		return (List<ServicioComercio>) serviciocomercioservice.listarTodosServicioComercio();
 	}
 
 	@PostMapping("/servicio/profesional")
@@ -229,8 +248,15 @@ public class Controlador {
 			return ResponseEntity.ok(resultado);
 		} else {
 			return ResponseEntity.status(400).body(resultado);
-		}
+		} 
 	}
+
+
+	@GetMapping("/servicio/profesional/todos-servicios")
+	public List<ServicioProfesional> todosServiciosOrofesional() {
+		return (List<ServicioProfesional>) servicioprofesionalservice.listarTodosServicioProfesional();
+	}
+
 
 
 
