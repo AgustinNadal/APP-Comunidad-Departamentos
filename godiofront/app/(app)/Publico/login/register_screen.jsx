@@ -14,7 +14,7 @@ export default function RegisterScreen() {
   const handleRegister = async () => {
     try {
       // Llamada a la API para registrar el usuario
-      const response = await axios.post(`http://10.0.2.2:8080/inicio/register?documento=${documento}&mail=${mail}`, {
+      const response = await axios.post(`http://192.168.83.213:8080/inicio/register?documento=${documento}&mail=${mail}`, {
         documento: documento,
         mail: mail,
       });

@@ -23,7 +23,7 @@ export default function declaracion_jurada() {
   const handleAceptar = async () => {
 
     try {
-      const response = await axios.put(`http://10.0.2.2:8080/inicio/denuncia/aceptar-responsabilidad?iddenuncia=${iddenuncia}`, {
+      const response = await axios.put(`http://192.168.83.213:8080/inicio/denuncia/aceptar-responsabilidad?iddenuncia=${iddenuncia}`, {
         iddenuncia: iddenuncia,
         
       });
@@ -50,7 +50,7 @@ export default function declaracion_jurada() {
   const handleRechazar = async () => {
 
     try {
-      const response = await axios.put(`http://10.0.2.2:8080/inicio/denuncia/rechazar-responsabilidad?iddenuncia=${iddenuncia}`, {
+      const response = await axios.put(`http://192.168.83.213:8080/inicio/denuncia/rechazar-responsabilidad?iddenuncia=${iddenuncia}`, {
         iddenuncia: iddenuncia,
         
       });

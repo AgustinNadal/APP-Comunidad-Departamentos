@@ -26,7 +26,7 @@ export default function mis_reclamos() {
       if (legajo) {
         setLoading(true);
         try {
-          const response = await fetch(`http://10.0.2.2:8080/inicio/reclamo/mis-reclamos-personal?legajo=${legajo}`);
+          const response = await fetch(`http://192.168.83.213:8080/inicio/reclamo/mis-reclamos-personal?legajo=${legajo}`);
           const result = await response.json();
           setData(result);
         } catch (error) {

@@ -13,7 +13,7 @@ export default function login_screen() {
 
   const handleRegister = async () => {
     try {
-      const responseLogin = await axios.post(`http://10.0.2.2:8080/inicio/loginVecino?mail=${mail}&contrasenia=${contrasenia}`, {
+      const responseLogin = await axios.post(`http://192.168.83.213:8080/inicio/loginVecino?mail=${mail}&contrasenia=${contrasenia}`, {
         contrasenia: contrasenia,
         mail: mail,
       });
@@ -22,7 +22,7 @@ export default function login_screen() {
 
       if (responseLogin.status === 200) {
         // Obtiene el documento del vecino
-        const responseDocumento = await axios.get(`http://10.0.2.2:8080/inicio/vecino/documento-por-mail?mail=${mail}`, {
+        const responseDocumento = await axios.get(`http://192.168.83.213:8080/inicio/vecino/documento-por-mail?mail=${mail}`, {
           mail: mail,
         });
 
