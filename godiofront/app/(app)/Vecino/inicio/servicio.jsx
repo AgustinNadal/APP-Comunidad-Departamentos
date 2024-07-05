@@ -15,8 +15,8 @@ export default function servicio() {
     const fetchServices = async () => {
       try {
         const [professionalResponse, commercialResponse] = await Promise.all([
-          axios.get('http://192.168.83.213:8080/inicio/servicio/profesional/todos-servicios'),
-          axios.get('http://192.168.83.213:8080/inicio/servicio/comercio/todos-servicios')
+          axios.get('http://192.168.0.73:8080/inicio/servicio/profesional/todos-servicios'),
+          axios.get('http://192.168.0.73:8080/inicio/servicio/comercio/todos-servicios')
         ]);
         setProfessionalServices(professionalResponse.data);
         setCommercialServices(commercialResponse.data);

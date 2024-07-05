@@ -24,7 +24,7 @@ export default function mis_reclamos() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://192.168.83.213:8080/inicio/reclamo/mis-reclamos?documento=${documento}`);
+        const response = await fetch(`http://192.168.0.73:8080/inicio/reclamo/mis-reclamos?documento=${documento}`);
         const result = await response.json();
         setData(result);
       } catch (error) {

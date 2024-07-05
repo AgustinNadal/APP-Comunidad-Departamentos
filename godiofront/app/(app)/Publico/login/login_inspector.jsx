@@ -15,7 +15,7 @@ export default function login_inspector() {
   const handleRegister = async () => {
     try {
       // Llamada a la API para registrar el usuario
-      const response = await axios.post(`http://192.168.83.213:8080/inicio/loginInspector?legajo=${legajo}&password=${password}`, {
+      const response = await axios.post(`http://192.168.0.73:8080/inicio/loginInspector?legajo=${legajo}&password=${password}`, {
         password: password,
         legajo: legajo,
       });

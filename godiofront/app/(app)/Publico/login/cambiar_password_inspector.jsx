@@ -29,7 +29,7 @@ export default function recuperar_password() {
     }
 
     try {
-      const response = await axios.put(`http://192.168.83.213:8080/inicio/inspectores/cambiarcontrasenia?legajo=${legajo}&password=${password}`, {
+      const response = await axios.put(`http://192.168.0.73:8080/inicio/inspectores/cambiarcontrasenia?legajo=${legajo}&password=${password}`, {
         legajo: legajo,
         password: password,
       });

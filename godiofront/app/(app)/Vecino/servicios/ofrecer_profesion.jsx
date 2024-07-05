@@ -28,6 +28,29 @@ export default function OfrecerProfesion() {
     getUserDocumento();
   }, []);
 
+  useEffect(() => {
+    const getUserNombre = async () => {
+      const userNombre = await AsyncStorage.getItem('userNombre');
+      if (userNombre) {
+        setNombre(userNombre);
+      }
+    };
+
+    getUserNombre();
+  }, []);
+
+  useEffect(() => {
+    const getUserApellido = async () => {
+      const userApellido = await AsyncStorage.getItem('userApellido');
+      if (userApellido) {
+        setApellido(userApellido);
+      }
+    };
+
+    getUserApellido();
+  }, []);
+
+
   const handleCrearServicioProfesion = async () => {
     // Validar campos vacíos
     if (!nombre || !apellido || !contacto || !descripcion || !horario || !rubro ) {
@@ -36,7 +59,7 @@ export default function OfrecerProfesion() {
     }
 
     try{
-      const responseCargarDenuncia = await axios.post(`http://192.168.83.213:8080/inicio/servicio/profesional?nombre=${nombre}&apellido=${apellido}&contacto=${contacto}&horario=${horario}&rubro=${rubro}&descripcion=${descripcion}&documento=${documento}`, {
+      const responseCargarDenuncia = await axios.post(`http://192.168.0.73:8080/inicio/servicio/profesional?nombre=${nombre}&apellido=${apellido}&contacto=${contacto}&horario=${horario}&rubro=${rubro}&descripcion=${descripcion}&documento=${documento}`, {
         nombre: nombre,
         apellido: apellido,
         contacto: contacto,
@@ -81,7 +104,7 @@ export default function OfrecerProfesion() {
 
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {/* Aquí se agrega el contenedor para el ícono de volver atrás */}
       <TouchableOpacity style={styles.backIconContainer}
         onPress={() => {
@@ -97,19 +120,7 @@ export default function OfrecerProfesion() {
         <Text style={styles.headerText}>OFRECER SERVICIO PROFESION</Text>
       </View>
 
-      <ScrollView style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Nombre"
-          value={nombre}
-          onChangeText={setNombre}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Apellido"
-          value={apellido}
-          onChangeText={setApellido}
-        />
+      <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
           placeholder="Contacto"
@@ -134,7 +145,7 @@ export default function OfrecerProfesion() {
           value={descripcion}
           onChangeText={setDescripcion}
         />
-      </ScrollView>
+      </View>
 
       <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
         <Text style={styles.imagePickerText}>
@@ -146,7 +157,10 @@ export default function OfrecerProfesion() {
       <TouchableOpacity style={styles.button} onPress={handleCrearServicioProfesion}>
         <Text style={styles.buttonText}>ENVIAR</Text>
       </TouchableOpacity>
-    </View>
+      
+      <View style={styles.separator} />
+      <View style={styles.separator} />
+    </ScrollView>
   );
 }
 

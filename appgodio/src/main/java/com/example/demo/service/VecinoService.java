@@ -98,4 +98,22 @@ public class VecinoService {
         }
     }
 
+	public String obtenerNombre(String documento) {
+		Optional<Vecino> vecino = repoVecino.findById(documento);
+		if (vecino.isPresent()) {
+			return vecino.get().getNombre();
+		} else {
+			return "No se encontro el vecino";
+		}
+	}
+
+	public String obtenerApellido(String documento) {
+		Optional<Vecino> vecino = repoVecino.findById(documento);
+		if (vecino.isPresent()) {
+			return vecino.get().getApellido();
+		} else {
+			return "No se encontro el vecino";
+		}
+	}
+
 }

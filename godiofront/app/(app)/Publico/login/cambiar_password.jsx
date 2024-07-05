@@ -28,7 +28,7 @@ export default function cambiar_password() {
     }
 
     try {
-      const response = await axios.put(`http://192.168.83.213:8080/inicio/vecino/cambiarcontrasenia?documento=${documento}&contrasenia=${nuevaContrasenia}`);
+      const response = await axios.put(`http://192.168.0.73:8080/inicio/vecino/cambiarcontrasenia?documento=${documento}&contrasenia=${nuevaContrasenia}`);
       if (response.status === 200) {
         Alert.alert('Éxito', 'Contraseña cambiada exitosamente');
         router.push("../inicio/home");

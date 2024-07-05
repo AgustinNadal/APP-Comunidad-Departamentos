@@ -86,6 +86,18 @@ public class Controlador {
 		}
 	}
 
+	@GetMapping("/vecino/vecino-nombre")
+	public ResponseEntity<String> vecinoNombre(@RequestParam String documento) {
+		String nombre = vecinoservice.obtenerNombre(documento);
+		return ResponseEntity.ok(nombre);
+	}
+
+	@GetMapping("/vecino/vecino-apellido")
+	public ResponseEntity<String> vecinoApellido(@RequestParam String documento) {
+		String apellido = vecinoservice.obtenerApellido(documento);
+		return ResponseEntity.ok(apellido);
+	}
+
 
 	@PostMapping("/register")
 	public ResponseEntity<String> register(@RequestParam String documento, @RequestParam String mail) {

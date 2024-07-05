@@ -10,25 +10,41 @@ export default function login_screen() {
   const [contrasenia, setContrasenia] = useState('');
   const [mail, setMail] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
 
   const handleRegister = async () => {
     try {
-      const responseLogin = await axios.post(`http://192.168.83.213:8080/inicio/loginVecino?mail=${mail}&contrasenia=${contrasenia}`, {
+      const responseLogin = await axios.post(`http://192.168.0.73:8080/inicio/loginVecino?mail=${mail}&contrasenia=${contrasenia}`, {
         contrasenia: contrasenia,
         mail: mail,
       });
 
       
 
+      
+
       if (responseLogin.status === 200) {
         // Obtiene el documento del vecino
-        const responseDocumento = await axios.get(`http://192.168.83.213:8080/inicio/vecino/documento-por-mail?mail=${mail}`, {
+        const responseDocumento = await axios.get(`http://192.168.0.73:8080/inicio/vecino/documento-por-mail?mail=${mail}`, {
           mail: mail,
         });
 
         // Guarda el mail en AsyncStorage
         await AsyncStorage.setItem('userMail', mail);
         await AsyncStorage.setItem('userDocumento', responseDocumento.data);
+
+        const responseNombre = await axios.get(`http://192.168.0.73:8080/inicio/vecino/vecino-nombre?documento=${responseDocumento.data}`, {
+          nombre: nombre,
+        });
+  
+        const responseApellido = await axios.get(`http://192.168.0.73:8080/inicio/vecino/vecino-apellido?documento=${responseDocumento.data}`, {
+          apellido: apellido,
+        });
+
+
+        await AsyncStorage.setItem('userNombre', responseNombre.data);
+        await AsyncStorage.setItem('userApellido', responseApellido.data);
         router.push("../../../Vecino/inicio/home");
         Alert.alert('Exito', 'Inicio de sesion exitoso.');
 

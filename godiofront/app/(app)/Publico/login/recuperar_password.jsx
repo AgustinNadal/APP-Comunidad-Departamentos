@@ -11,7 +11,7 @@ export default function recuperar_password() {
 
   const handleRecuperarPassword = async () => {
     try {
-      const response = await axios.post(`http://192.168.83.213:8080/inicio/vecino/olvidecontrasenia?mail=${mail}`, {
+      const response = await axios.post(`http://192.168.0.73:8080/inicio/vecino/olvidecontrasenia?mail=${mail}`, {
         mail: mail,
       });
  
