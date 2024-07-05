@@ -11,7 +11,7 @@ export default function lista_reclamos() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://192.168.0.73:8080/inicio/reclamo/todos-reclamos`);
+        const response = await fetch(`http://10.0.2.2:8080/inicio/reclamo/todos-reclamos`);
         const result = await response.json();
         setData(result);
       } catch (error) {

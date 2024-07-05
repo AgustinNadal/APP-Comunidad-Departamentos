@@ -40,7 +40,7 @@ export default function crear_denuncia() {
 
   const handleCrearDenuncia = async () => {
     try {
-      const responseCargarDenuncia = await axios.post(`http://192.168.0.73:8080/inicio/denuncia?documento=${documento}&idsitio=${sitio}&descripcion=${descripcion}&documentodenunciado=${documentodenunciado}`, {
+      const responseCargarDenuncia = await axios.post(`http://10.0.2.2:8080/inicio/denuncia?documento=${documento}&idsitio=${sitio}&descripcion=${descripcion}&documentodenunciado=${documentodenunciado}`, {
         documento: documento,
         sitio: sitio,
         descripcion: descripcion,
@@ -48,7 +48,7 @@ export default function crear_denuncia() {
       });
 
       if (responseCargarDenuncia.status === 200) {
-        const responseIdDenuncia = await axios.get(`http://192.168.0.73:8080/inicio/denuncia/obtener-id-denuncia?documento=${documento}&idsitio=${sitio}&descripcion=${descripcion}&documentodenunciado=${documentodenunciado}`, {
+        const responseIdDenuncia = await axios.get(`http://10.0.2.2:8080/inicio/denuncia/obtener-id-denuncia?documento=${documento}&idsitio=${sitio}&descripcion=${descripcion}&documentodenunciado=${documentodenunciado}`, {
           documento: documento,
           sitio: sitio,
           descripcion: descripcion,

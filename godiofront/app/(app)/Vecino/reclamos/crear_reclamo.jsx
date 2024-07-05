@@ -45,7 +45,7 @@ export default function crear_reclamo() {
     const reclamosGuardados = JSON.parse(await AsyncStorage.getItem('reclamosGuardados')) || [];
     for (const reclamo of reclamosGuardados) {
       try {
-        const response = await axios.post(`http://192.168.0.73:8080/inicio/reclamo?documento=${documento}&idsitio=${sitio}&iddesperfecto=${desperfecto}&descripcion=${descripcion}`, reclamo);
+        const response = await axios.post(`http://10.0.2.2:8080/inicio/reclamo?documento=${documento}&idsitio=${sitio}&iddesperfecto=${desperfecto}&descripcion=${descripcion}`, reclamo);
         if (response.status === 200) {
           Alert.alert('Exito', 'Se ha enviado un reclamo almacenado localmente.');
         }
@@ -63,7 +63,7 @@ export default function crear_reclamo() {
   }, [isConnected]);
 
   const handleCrearReclamo = async () => {
-    const reclamo = await axios.post(`http://192.168.0.73:8080/inicio/reclamo?documento=${documento}&idsitio=${sitio}&iddesperfecto=${desperfecto}&descripcion=${descripcion}`,{
+    const reclamo = await axios.post(`http://10.0.2.2:8080/inicio/reclamo?documento=${documento}&idsitio=${sitio}&iddesperfecto=${desperfecto}&descripcion=${descripcion}`,{
       documento,
       sitio,
       desperfecto,
@@ -81,7 +81,7 @@ export default function crear_reclamo() {
     }
   
     try {
-      const response = await axios.post(`http://192.168.0.73:8080/inicio/reclamo`, reclamo);
+      const response = await axios.post(`http://10.0.2.2:8080/inicio/reclamo`, reclamo);
   
       if (response.status === 200 || reclamo.status === 200) {
         router.push("../../../Vecino/inicio/home");

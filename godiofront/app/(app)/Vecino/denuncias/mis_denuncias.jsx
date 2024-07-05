@@ -24,7 +24,7 @@ export default function MisDenuncias() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://192.168.0.73:8080/inicio/denuncia/mis-denuncias?documento=${documento}`);
+        const response = await fetch(`http://10.0.2.2:8080/inicio/denuncia/mis-denuncias?documento=${documento}`);
         const result = await response.json();
         setData(result);
       } catch (error) {

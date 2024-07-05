@@ -33,7 +33,7 @@ export default function OfrecerProfesion() {
     }
 
     try {
-      const responseCargarDenuncia = await axios.post(`http://192.168.0.73:8080/inicio/servicio/comercio?direccion=${direccion}&contacto=${contacto}&descripcion=${descripcion}&documento=${documento}&nombrecomercio=${nombrecomercio}`, {
+      const responseCargarDenuncia = await axios.post(`http://10.0.2.2:8080/inicio/servicio/comercio?direccion=${direccion}&contacto=${contacto}&descripcion=${descripcion}&documento=${documento}&nombrecomercio=${nombrecomercio}`, {
         direccion: direccion,
         contacto: contacto,
         descripcion: descripcion,

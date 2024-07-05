@@ -15,7 +15,7 @@ export default function login_screen() {
 
   const handleRegister = async () => {
     try {
-      const responseLogin = await axios.post(`http://192.168.0.73:8080/inicio/loginVecino?mail=${mail}&contrasenia=${contrasenia}`, {
+      const responseLogin = await axios.post(`http://10.0.2.2:8080/inicio/loginVecino?mail=${mail}&contrasenia=${contrasenia}`, {
         contrasenia: contrasenia,
         mail: mail,
       });
@@ -26,7 +26,7 @@ export default function login_screen() {
 
       if (responseLogin.status === 200) {
         // Obtiene el documento del vecino
-        const responseDocumento = await axios.get(`http://192.168.0.73:8080/inicio/vecino/documento-por-mail?mail=${mail}`, {
+        const responseDocumento = await axios.get(`http://10.0.2.2:8080/inicio/vecino/documento-por-mail?mail=${mail}`, {
           mail: mail,
         });
 
@@ -34,11 +34,11 @@ export default function login_screen() {
         await AsyncStorage.setItem('userMail', mail);
         await AsyncStorage.setItem('userDocumento', responseDocumento.data);
 
-        const responseNombre = await axios.get(`http://192.168.0.73:8080/inicio/vecino/vecino-nombre?documento=${responseDocumento.data}`, {
+        const responseNombre = await axios.get(`http://10.0.2.2:8080/inicio/vecino/vecino-nombre?documento=${responseDocumento.data}`, {
           nombre: nombre,
         });
   
-        const responseApellido = await axios.get(`http://192.168.0.73:8080/inicio/vecino/vecino-apellido?documento=${responseDocumento.data}`, {
+        const responseApellido = await axios.get(`http://10.0.2.2:8080/inicio/vecino/vecino-apellido?documento=${responseDocumento.data}`, {
           apellido: apellido,
         });
 
